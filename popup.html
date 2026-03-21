@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!-- Minoshek built this with help from AI. -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Schulnetz Notenrechner Settings</title>
+    <style>
+      body { 
+        font-family: sans-serif; 
+        font-size: 14px; 
+        margin: 0; 
+        padding: 16px;
+        width: 280px;
+        background: #f8f9fa;
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+      
+      .header h2 {
+        margin: 0 0 8px 0;
+        color: #1976d2;
+        font-size: 18px;
+      }
+      
+      .header p {
+        margin: 0;
+        color: #666;
+        font-size: 12px;
+      }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 16px 2px 8px;
+        color: #5b677a;
+      }
+
+      .theme-setting {
+        border: 1px solid #9ec5ff;
+        background: linear-gradient(135deg, #ffffff 0%, #eef6ff 100%);
+      }
+
+      .theme-setting .button-details h4 {
+        color: #0f4c9c;
+      }
+      
+      .button-setting {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+      }
+      
+      .button-setting:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      }
+      
+      .button-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      
+      .button-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .button-details h4 {
+        margin: 0 0 2px 0;
+        font-size: 14px;
+        color: #333;
+      }
+      
+      .button-details p {
+        margin: 0;
+        font-size: 11px;
+        color: #666;
+      }
+      
+      /* Switch Design */
+      .switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+      }
+      
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .3s;
+        border-radius: 24px;
+      }
+      
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .3s;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      }
+      
+      input:checked + .slider {
+        background-color: #4caf50;
+      }
+      
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+      
+      /* Disabled switch styling */
+      input:disabled + .slider {
+        background-color: #e0e0e0;
+        cursor: not-allowed;
+      }
+      
+      input:disabled + .slider:before {
+        background-color: #f5f5f5;
+      }
+      
+      .button-setting:has(input:disabled) {
+        opacity: 0.6;
+      }
+      
+      .button-setting:has(input:disabled):hover {
+        transform: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 12px;
+        border-top: 1px solid #e0e0e0;
+        font-size: 10px;
+        color: #888;
+      }
+      
+      .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      
+      .status-active {
+        background-color: #4caf50;
+      }
+      
+      .status-inactive {
+        background-color: #ccc;
+      }
+      
+      /* Special styling for Gradeventure button */
+      .gradeventure-button {
+        position: relative;
+        background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+        border: 2px dashed #ff6b35;
+        opacity: 0.8;
+      }
+      
+      .gradeventure-button:hover {
+        transform: none;
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2);
+      }
+      
+      .gradeventure-button .button-details h4 {
+        color: #ff6b35;
+        font-style: italic;
+      }
+      
+      .gradeventure-button .button-details p {
+        color: #ff6b35;
+        font-weight: 500;
+      }
+      
+      .gradeventure-button::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #ff6b35, #ffab40, #ff6b35);
+        border-radius: 8px;
+        z-index: -1;
+        opacity: 0.3;
+        animation: shimmer 2s infinite;
+      }
+      
+      @keyframes shimmer {
+        0% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+        100% { opacity: 0.3; }
+      }
+
+      /* Bug Report Button */
+      .bug-report-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .bug-report-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(229, 62, 62, 0.3);
+      }
+
+      /* Bug Report Modal */
+      .bug-report-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 1000;
+        animation: fadeIn 0.2s;
+      }
+
+      .bug-report-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        width: 90%;
+        max-width: 400px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        animation: slideIn 0.3s;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .modal-header h3 {
+        margin: 0;
+        color: #e53e3e;
+        font-size: 18px;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+      }
+
+      .close-btn:hover {
+        background-color: #f0f0f0;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #e53e3e;
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .form-group.required label::after {
+        content: " *";
+        color: #e53e3e;
+      }
+
+      .submit-btn {
+        width: 100%;
+        background: #e53e3e;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .submit-btn:hover {
+        background: #c53030;
+      }
+
+      .submit-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        display: none;
+      }
+
+      .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        display: none;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h2>Button Settings</h2>
+      <p>Ein- und Ausschalten der Funktions-Buttons</p>
+    </div>
+
+    <div class="section-label">Theme</div>
+
+    <div class="button-setting theme-setting">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <rect x="5" y="5" width="22" height="22" rx="5" fill="#0b0b0f"/>
+            <path d="M11 18C12.5 16 14.5 15 17.2 15C19.6 15 21.6 16 23 18" stroke="#00b8ff" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="11" cy="12" r="1.8" fill="#1e3a8a"/>
+            <circle cx="21" cy="12" r="1.8" fill="#00b8ff"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>Black Theme</h4>
+          <p>Dunkles Schulnetz mit Neon-Blau</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-dark-theme">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="section-label">Schulnetz Buttons</div>
+
+    <div class="button-setting">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <rect x="14" y="6" width="4" height="20" rx="2" fill="#388e3c"/>
+            <rect x="6" y="14" width="20" height="4" rx="2" fill="#388e3c"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>Pluspunkte</h4>
+          <p>Zeigt Pluspunkte-Übersicht an</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-pluspoints" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="button-setting">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="12" fill="#ff9800"/>
+            <path d="M14 7a5 5 0 0 1 5 5c0 2.5-2 4-2 6h-6c0-2 2-3.5 2-6a5 5 0 0 1 5-5z" fill="#fff"/>
+            <rect x="11" y="20" width="6" height="2" rx="1" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>Verbesserungen</h4>
+          <p>Zeigt Verbesserungschancen</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-improvement" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="button-setting">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L18.5 11.5L26 14L18.5 16.5L16 24L13.5 16.5L6 14L13.5 11.5L16 4Z" fill="#ffb300"/>
+            <circle cx="16" cy="16" r="3" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>Achievements</h4>
+          <p>Zeigt Achievements an</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-achievements" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="button-setting">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <rect x="4" y="4" width="20" height="20" rx="4" fill="#1976d2"/>
+            <rect x="7" y="7" width="14" height="4" rx="1.5" fill="#fff"/>
+            <rect x="7" y="13" width="4" height="4" rx="1.5" fill="#fff"/>
+            <rect x="12" y="13" width="4" height="4" rx="1.5" fill="#fff"/>
+            <rect x="17" y="13" width="4" height="4" rx="1.5" fill="#fff"/>
+            <rect x="7" y="18" width="4" height="4" rx="1.5" fill="#fff"/>
+            <rect x="12" y="18" width="4" height="4" rx="1.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>Notenrechner</h4>
+          <p>Berechnet benötigte Noten</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-calculator" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="button-setting">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <rect x="4" y="4" width="20" height="20" rx="4" fill="#b36a00"/>
+            <path d="M9 19l1.5-5.5L18 6.99a1.4 1.4 0 012 2l-6.51 7.5L9 19z" fill="#fff"/>
+            <rect x="7" y="21" width="14" height="2" rx="1" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>Eigene Noten</h4>
+          <p>Teste eigene Noten-Szenarien</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-custom" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="button-setting gradeventure-button">
+      <div class="button-info">
+        <div class="button-icon">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <path d="M8 12C6.89543 12 6 12.8954 6 14V18C6 19.1046 6.89543 20 8 20H24C25.1046 20 26 19.1046 26 18V14C26 12.8954 25.1046 12 24 12H8Z" stroke="#ff6b35" stroke-width="2" fill="none"/>
+            <circle cx="10" cy="16" r="1.5" fill="#ff6b35"/>
+            <circle cx="22" cy="14" r="1.5" fill="#ff6b35"/>
+            <circle cx="24" cy="16" r="1.5" fill="#ff6b35"/>
+            <rect x="14" y="8" width="4" height="2" rx="1" fill="#ff6b35"/>
+            <rect x="14" y="22" width="4" height="2" rx="1" fill="#ff6b35"/>
+          </svg>
+        </div>
+        <div class="button-details">
+          <h4>🎮 Gradeventure</h4>
+          <p>Coming Soon...</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="switch-game" disabled>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <button class="bug-report-btn" id="bugReportBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+      Bug melden
+    </button>
+
+    <div class="bug-report-modal" id="bugReportModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🐛 Bug melden</h3>
+          <button class="close-btn" id="closeModal">&times;</button>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+          Vielen Dank! Ihr Bug-Report wurde erfolgreich gesendet.
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+          Es gab einen Fehler beim Senden. Bitte versuchen Sie es erneut.
+        </div>
+
+        <form id="bugReportForm">
+          <div class="form-group required">
+            <label for="bugTitle">Problem-Titel</label>
+            <input type="text" id="bugTitle" name="bugTitle" required placeholder="Kurze Beschreibung des Problems">
+          </div>
+
+          <div class="form-group required">
+            <label for="bugType">Art des Problems</label>
+            <select id="bugType" name="bugType" required>
+              <option value="">Bitte wählen...</option>
+              <option value="Funktionsfehler">Funktionsfehler</option>
+              <option value="Darstellungsfehler">Darstellungsfehler</option>
+              <option value="Performance-Problem">Performance-Problem</option>
+              <option value="Kompatibilitätsproblem">Kompatibilitätsproblem</option>
+              <option value="Datenverlust">Datenverlust</option>
+              <option value="Sonstiges">Sonstiges</option>
+            </select>
+          </div>
+
+          <div class="form-group required">
+            <label for="bugDescription">Detaillierte Beschreibung</label>
+            <textarea id="bugDescription" name="bugDescription" required placeholder="Beschreiben Sie das Problem so detailliert wie möglich. Was haben Sie gemacht? Was ist passiert? Was hätten Sie erwartet?"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="bugSteps">Schritte zum Reproduzieren</label>
+            <textarea id="bugSteps" name="bugSteps" placeholder="1. Gehen Sie zu...&#10;2. Klicken Sie auf...&#10;3. Das Problem tritt auf..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="userBrowser">Browser</label>
+            <input type="text" id="userBrowser" name="userBrowser" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="userEmail">E-Mail (optional)</label>
+            <input type="email" id="userEmail" name="userEmail" placeholder="Ihre E-Mail für Rückfragen">
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Bug Report senden
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer">
+      Maintained by Minoshek
+    </div>
+
+    <script src="browser-polyfill.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

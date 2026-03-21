@@ -1,0 +1,868 @@
+html.panum-dark-theme {
+  --panum-bg: #0f1115;
+  --panum-bg-soft: #171b22;
+  --panum-bg-card: #1d2430;
+  --panum-bg-header: #1a2431;
+  --panum-bg-header-soft: #151d28;
+  --panum-border: #303a4b;
+  --panum-accent: #5fb3ff;
+  --panum-accent-soft: #2d4f74;
+  --panum-text: #e8edf5;
+  --panum-text-soft: #b5bfce;
+  --panum-success: #7fd39a;
+
+  --dhx-scheduler-base-colors-white: #111822;
+  --dhx-scheduler-base-colors-select: #20364f;
+  --dhx-scheduler-base-colors-border: #303a4b;
+  --dhx-scheduler-base-colors-secondary: rgba(15, 17, 21, 0.95);
+  --dhx-scheduler-base-colors-secondary-hover: rgba(23, 27, 34, 0.95);
+  --dhx-scheduler-base-colors-text-base: #e8edf5;
+  --dhx-scheduler-base-colors-text-light: #b5bfce;
+  color-scheme: dark;
+}
+
+html.panum-dark-theme,
+html.panum-dark-theme body,
+html.panum-dark-theme #wrapper,
+html.panum-dark-theme #content,
+html.panum-dark-theme .content,
+html.panum-dark-theme .container,
+html.panum-dark-theme .mdl-layout__content,
+html.panum-dark-theme .mdl-card,
+html.panum-dark-theme .panel,
+html.panum-dark-theme .card,
+html.panum-dark-theme .modal-content,
+html.panum-dark-theme .dialog,
+html.panum-dark-theme .mdl-dialog,
+html.panum-dark-theme nav,
+html.panum-dark-theme #navigation-list,
+html.panum-dark-theme #nav-main-menu,
+html.panum-dark-theme #sn-nav-global,
+html.panum-dark-theme .cls-page--navlist,
+html.panum-dark-theme .cls-page--mainmenu,
+html.panum-dark-theme .cls-page--mainmenu-large,
+html.panum-dark-theme .cls-page--mainnav-small,
+html.panum-dark-theme .cls-page--mainnav-small--list,
+html.panum-dark-theme .cls-page--mainmenu-element,
+html.panum-dark-theme .cls-page--mainmenu-subtitle,
+html.panum-dark-theme .cls-page--navlist-spacer-bottom,
+html.panum-dark-theme .dhx_scale_time_slot,
+html.panum-dark-theme .dhx_scale_time_slot_hour_start,
+html.panum-dark-theme .dhx_month_body,
+html.panum-dark-theme .dhx_month_head,
+html.panum-dark-theme .hide_border {
+  background: var(--panum-bg) !important;
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme h1,
+html.panum-dark-theme h2,
+html.panum-dark-theme h3,
+html.panum-dark-theme h4,
+html.panum-dark-theme h5,
+html.panum-dark-theme h6,
+html.panum-dark-theme p,
+html.panum-dark-theme span,
+html.panum-dark-theme label,
+html.panum-dark-theme li,
+html.panum-dark-theme strong,
+html.panum-dark-theme b,
+html.panum-dark-theme td,
+html.panum-dark-theme th,
+html.panum-dark-theme div,
+html.panum-dark-theme a {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme a {
+  text-decoration-color: var(--panum-accent) !important;
+}
+
+html.panum-dark-theme input,
+html.panum-dark-theme textarea,
+html.panum-dark-theme select,
+html.panum-dark-theme button,
+html.panum-dark-theme .mdl-button {
+  background-color: var(--panum-bg-soft) !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .mdl-navigation__link,
+html.panum-dark-theme .mdl-navigation__link i,
+html.panum-dark-theme .cls-page--mainmenu-icon,
+html.panum-dark-theme .cls-page--mainmenu-tooltip,
+html.panum-dark-theme .mdl-tooltip,
+html.panum-dark-theme .mdl-menu,
+html.panum-dark-theme .mdl-menu__outline,
+html.panum-dark-theme .mdl-menu__container,
+html.panum-dark-theme .mdl-menu__item,
+html.panum-dark-theme .mdl-dialog__content,
+html.panum-dark-theme .mdl-dialog__actions {
+  color: var(--panum-text) !important;
+  background-color: var(--panum-bg-soft) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme #header-menu,
+html.panum-dark-theme .mdl-layout__header-row,
+html.panum-dark-theme .cls-page--header-row,
+html.panum-dark-theme .cls-page--header,
+html.panum-dark-theme #sn-nav-global,
+html.panum-dark-theme #nav-main-menu,
+html.panum-dark-theme .cls-page--mainmenu {
+  background: linear-gradient(180deg, var(--panum-bg-header), var(--panum-bg-header-soft)) !important;
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme .cls-page--header-row--logo-span,
+html.panum-dark-theme #logo-span {
+  background: #1f2b3a !important;
+  color: var(--panum-text) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.panum-dark-theme .cls-page--header-row--logo-gradient,
+html.panum-dark-theme #sn-gradient {
+  background: linear-gradient(90deg, #1f2b3a 0%, rgba(31, 43, 58, 0.45) 55%, rgba(26, 36, 49, 0) 100%) !important;
+}
+
+html.panum-dark-theme #menu-toggle-button,
+html.panum-dark-theme #menu-toggle-button i,
+html.panum-dark-theme #menu-scroll-left,
+html.panum-dark-theme #menu-scroll-right,
+html.panum-dark-theme #sn-main-menu,
+html.panum-dark-theme #sn-main-menu i,
+html.panum-dark-theme #sn-bookmarks,
+html.panum-dark-theme #sn-bookmarks i,
+html.panum-dark-theme #sn-notifications,
+html.panum-dark-theme #sn-notifications i,
+html.panum-dark-theme #sn-anrufdetails,
+html.panum-dark-theme #sn-anrufdetails i,
+html.panum-dark-theme .cls-page--mainmenu-element,
+html.panum-dark-theme .cls-page--mainmenu-element i,
+html.panum-dark-theme .cls-page--mainmenu-subtitle,
+html.panum-dark-theme [id^="menu_title_"] {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme .cls-page--mainmenu-active,
+html.panum-dark-theme .cls-page--mainmenu-active i,
+html.panum-dark-theme .cls-page--mainmenu-active .cls-page--mainmenu-subtitle {
+  background-color: transparent !important;
+  color: #f8fbff !important;
+}
+
+html.panum-dark-theme #nav-main-menu .mdl-navigation__link,
+html.panum-dark-theme .cls-page--mainmenu .mdl-navigation__link,
+html.panum-dark-theme .cls-page--mainmenu-element {
+  background-color: transparent !important;
+}
+
+html.panum-dark-theme .cls-page--mainmenu-active {
+  box-shadow: inset 0 -2px 0 var(--panum-accent) !important;
+}
+
+html.panum-dark-theme .mdl-navigation__link[style*="color: black"],
+html.panum-dark-theme .mdl-button[style*="color: black"],
+html.panum-dark-theme a.mdl-button[style*="color: black"],
+html.panum-dark-theme .cls-page--mainmenu-subtitle[style*="color: black"] {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme .cls-page--mainmenu-active,
+html.panum-dark-theme .cls-page--leftmenu-active,
+html.panum-dark-theme .mdl-navigation__link:hover,
+html.panum-dark-theme .mdl-menu__item:hover {
+  background-color: var(--panum-accent-soft) !important;
+  color: #ffffff !important;
+}
+
+html.panum-dark-theme .mdl-tabs__ripple-container,
+html.panum-dark-theme .mdl-ripple {
+  background: rgba(95, 179, 255, 0.12) !important;
+}
+
+html.panum-dark-theme .mdl-tabs__ripple-container {
+  background: transparent !important;
+}
+
+html.panum-dark-theme #timer {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme #circle-progress {
+  stroke: var(--panum-accent) !important;
+}
+
+html.panum-dark-theme table,
+html.panum-dark-theme tr,
+html.panum-dark-theme td,
+html.panum-dark-theme th,
+html.panum-dark-theme .mdl-data-table,
+html.panum-dark-theme .mdl-data-table__cell--non-numeric {
+  background-color: #141922 !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme tr:nth-child(even),
+html.panum-dark-theme .mdl-data-table tbody tr:nth-child(even) {
+  background-color: #171d27 !important;
+}
+
+html.panum-dark-theme tr:hover,
+html.panum-dark-theme .mdl-data-table tbody tr:hover {
+  background-color: #1f2d3f !important;
+}
+
+html.panum-dark-theme .dhx_cal_container,
+html.panum-dark-theme .dhx_cal_navline,
+html.panum-dark-theme .dhx_cal_header,
+html.panum-dark-theme .dhx_cal_data,
+html.panum-dark-theme .dhx_cal_scale_placeholder,
+html.panum-dark-theme .dhx_scale_holder,
+html.panum-dark-theme .dhx_scale_holder_now,
+html.panum-dark-theme .dhx_scale_hour,
+html.panum-dark-theme .dhx_scale_hour_custom_main,
+html.panum-dark-theme .dhx_scale_hour_custom_cont,
+html.panum-dark-theme .dhx_scale_hour_custom_grid,
+html.panum-dark-theme .dhx_cal_data table,
+html.panum-dark-theme .dhx_cal_data table tbody,
+html.panum-dark-theme .dhx_cal_data table tr,
+html.panum-dark-theme .dhx_cal_data table td,
+html.panum-dark-theme .dhx_matrix_scell,
+html.panum-dark-theme .dhx_matrix_cell,
+html.panum-dark-theme .dhx_matrix_label,
+html.panum-dark-theme .dhx_cal_tab,
+html.panum-dark-theme .dhx_cal_today_button,
+html.panum-dark-theme .dhx_cal_prev_button,
+html.panum-dark-theme .dhx_cal_next_button,
+html.panum-dark-theme .dhx_cal_date,
+html.panum-dark-theme .dhx_cal_event,
+html.panum-dark-theme .dhx_cal_event_line,
+html.panum-dark-theme .dhx_cal_event_clear,
+html.panum-dark-theme .stpt_event_body,
+html.panum-dark-theme .stpt_event_text,
+html.panum-dark-theme .stpt_event_label,
+html.panum-dark-theme .dhx_month_body,
+html.panum-dark-theme .dhx_month_head {
+  background-color: #141d2a !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .dhx_cal_header,
+html.panum-dark-theme .dhx_scale_bar,
+html.panum-dark-theme .dhx_cal_navline {
+  background: #1a2636 !important;
+  color: #eaf1fb !important;
+}
+
+html.panum-dark-theme .stpt_event_body,
+html.panum-dark-theme .stpt_event_text,
+html.panum-dark-theme .stpt_event_label,
+html.panum-dark-theme .dhx_cal_event .stpt_event_body,
+html.panum-dark-theme .dhx_cal_event_line .stpt_event_body {
+  background: #2b455f !important;
+  color: #f3f8ff !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small,
+html.panum-dark-theme button.mdl-button.mdl-button--small {
+  color: var(--panum-text-soft) !important;
+  border: 1px solid var(--panum-border) !important;
+  background-color: transparent !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small:hover,
+html.panum-dark-theme button.mdl-button.mdl-button--small:hover {
+  background-color: rgba(95, 179, 255, 0.16) !important;
+  color: #f5f9ff !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small.is-active,
+html.panum-dark-theme button.mdl-button.mdl-button--small.is-active,
+html.panum-dark-theme a.mdl-button.mdl-button--small.active,
+html.panum-dark-theme button.mdl-button.mdl-button--small.active,
+html.panum-dark-theme a.mdl-button.mdl-button--small[aria-pressed="true"],
+html.panum-dark-theme button.mdl-button.mdl-button--small[aria-pressed="true"],
+html.panum-dark-theme a.mdl-button.mdl-button--small[style*="#B34C27"],
+html.panum-dark-theme button.mdl-button.mdl-button--small[style*="#B34C27"] {
+  background-color: #355478 !important;
+  color: #ffffff !important;
+  border-color: #4f7199 !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small.mdl-button--raised[href*="eventtype="] {
+  transition: filter 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small.mdl-button--raised[href*="eventtype="] {
+  opacity: 1 !important;
+  filter: saturate(1) brightness(1) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22), 0 6px 14px rgba(0, 0, 0, 0.28) !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small[href*="eventtype="]:not(.mdl-button--raised) {
+  opacity: 0.55 !important;
+  filter: saturate(0.45) brightness(0.78) grayscale(0.22) !important;
+  box-shadow: none !important;
+  border-color: rgba(140, 155, 176, 0.45) !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small[href*="eventtype="]:not(.mdl-button--raised):hover {
+  opacity: 0.8 !important;
+  filter: saturate(0.75) brightness(0.9) !important;
+}
+
+html.panum-dark-theme .dhx_cal_tab.active,
+html.panum-dark-theme .dhx_cal_tab:hover,
+html.panum-dark-theme .dhx_cal_today_button:hover,
+html.panum-dark-theme .dhx_cal_prev_button:hover,
+html.panum-dark-theme .dhx_cal_next_button:hover {
+  background: linear-gradient(135deg, #355478, #5fb3ff) !important;
+  color: #ffffff !important;
+}
+
+html.panum-dark-theme .dhx_cal_light,
+html.panum-dark-theme .dhx_cal_larea,
+html.panum-dark-theme .dhx_cal_lsection,
+html.panum-dark-theme .dhx_cal_ltext,
+html.panum-dark-theme .dhx_cal_light select,
+html.panum-dark-theme .dhx_cal_light input,
+html.panum-dark-theme .dhx_cal_light textarea,
+html.panum-dark-theme .dhx_modal_box,
+html.panum-dark-theme .dhx_popup_area,
+html.panum-dark-theme .dhx_tooltip {
+  background: #171b22 !important;
+  color: var(--panum-text) !important;
+  border: 1px solid var(--panum-border) !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel,
+html.panum-dark-theme #notenrechner-calc-panel,
+html.panum-dark-theme #notenrechner-custom-panel,
+html.panum-dark-theme #improvement-overlay-panel,
+html.panum-dark-theme #gamification-overlay-panel,
+html.panum-dark-theme #pluspoints-overlay-panel *,
+html.panum-dark-theme #notenrechner-calc-panel *,
+html.panum-dark-theme #notenrechner-custom-panel *,
+html.panum-dark-theme #improvement-overlay-panel *,
+html.panum-dark-theme #gamification-overlay-panel * {
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel,
+html.panum-dark-theme #notenrechner-calc-panel,
+html.panum-dark-theme #notenrechner-custom-panel,
+html.panum-dark-theme #improvement-overlay-panel,
+html.panum-dark-theme #gamification-overlay-panel,
+html.panum-dark-theme #pluspoints-overlay-panel[style*="rgb(255, 255, 255)"],
+html.panum-dark-theme #notenrechner-calc-panel[style*="rgb(255, 255, 255)"],
+html.panum-dark-theme #notenrechner-custom-panel[style*="rgb(255, 255, 255)"],
+html.panum-dark-theme #improvement-overlay-panel[style*="rgb(255, 255, 255)"],
+html.panum-dark-theme #gamification-overlay-panel[style*="rgb(255, 255, 255)"] {
+  background: #151d28 !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background: white"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background:#fff"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background: #f8f9fa"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background:#f8f9fa"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="linear-gradient(135deg, #f8f9fa, #e9ecef)"],
+html.panum-dark-theme #notenrechner-calc-panel [style*="background: white"],
+html.panum-dark-theme #notenrechner-calc-panel [style*="background: #f8f9fa"],
+html.panum-dark-theme #notenrechner-custom-panel [style*="background: white"],
+html.panum-dark-theme #notenrechner-custom-panel [style*="background: #f8f9fa"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background: white"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background: #f8f9fa"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background: white"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background: #f8f9fa"] {
+  background: #1a202b !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background: rgb(255, 255, 255)"],
+html.panum-dark-theme #notenrechner-calc-panel [style*="background: rgb(255, 255, 255)"],
+html.panum-dark-theme #notenrechner-custom-panel [style*="background: rgb(255, 255, 255)"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background: rgb(255, 255, 255)"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background: rgb(255, 255, 255)"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background: rgb(245, 245, 245)"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background: rgb(245, 245, 245)"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background: rgb(245, 245, 245)"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background:#f9f9f9"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background:#f9f9f9"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background:#f9f9f9"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background: #f9f9f9"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background: #f9f9f9"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background: #f9f9f9"] {
+  background: #1a202b !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel [style*="color:#495057"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="color: #495057"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="color:#6c757d"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="color: #6c757d"],
+html.panum-dark-theme #notenrechner-calc-panel [style*="color:#495057"],
+html.panum-dark-theme #notenrechner-calc-panel [style*="color: #495057"],
+html.panum-dark-theme #notenrechner-custom-panel [style*="color:#495057"],
+html.panum-dark-theme #notenrechner-custom-panel [style*="color: #495057"],
+html.panum-dark-theme #improvement-overlay-panel [style*="color:#444"],
+html.panum-dark-theme #improvement-overlay-panel [style*="color: #444"],
+html.panum-dark-theme #gamification-overlay-panel [style*="color:#222"],
+html.panum-dark-theme #gamification-overlay-panel [style*="color: #222"],
+html.panum-dark-theme #gamification-overlay-panel [style*="color:#666"],
+html.panum-dark-theme #gamification-overlay-panel [style*="color: #666"],
+html.panum-dark-theme #gamification-overlay-panel [style*="color:#888"],
+html.panum-dark-theme #gamification-overlay-panel [style*="color: #888"],
+html.panum-dark-theme #gamification-overlay-panel [style*="rgb(102, 102, 102)"] {
+  color: var(--panum-text-soft) !important;
+}
+
+html.panum-dark-theme #notenrechner-calc-panel select,
+html.panum-dark-theme #notenrechner-custom-panel select,
+html.panum-dark-theme #notenrechner-calc-panel input,
+html.panum-dark-theme #notenrechner-custom-panel input,
+html.panum-dark-theme #notenrechner-calc-panel #calc-info,
+html.panum-dark-theme #notenrechner-custom-panel #custom-calc-info,
+html.panum-dark-theme #notenrechner-custom-panel #custom-calc-result {
+  background: #111722 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme #improvement-overlay-panel [style*="#e8f5e8"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background-color: #e8f5e8"] {
+  background: rgba(76, 175, 80, 0.18) !important;
+}
+
+html.panum-dark-theme #improvement-overlay-panel [style*="#ffebee"],
+html.panum-dark-theme #improvement-overlay-panel [style*="background-color: #ffebee"] {
+  background: rgba(244, 67, 54, 0.18) !important;
+}
+
+html.panum-dark-theme #improvement-overlay-panel [style*="#c8e6c9"] {
+  background: rgba(76, 175, 80, 0.26) !important;
+}
+
+html.panum-dark-theme #improvement-overlay-panel [style*="#ffcdd2"] {
+  background: rgba(244, 67, 54, 0.26) !important;
+}
+
+html.panum-dark-theme #improvement-overlay-panel [style*="#2e7d32"] {
+  color: #9fdfaa !important;
+}
+
+html.panum-dark-theme #improvement-overlay-panel [style*="#c62828"] {
+  color: #ff9c9c !important;
+}
+
+html.panum-dark-theme #gamification-overlay-panel #achievement-counter,
+html.panum-dark-theme #gamification-overlay-panel #achievement-categories,
+html.panum-dark-theme #gamification-overlay-panel .achievement-item,
+html.panum-dark-theme #gamification-overlay-panel [style*="background: #fff8e1"],
+html.panum-dark-theme #gamification-overlay-panel [style*="background:#fff8e1"] {
+  background: #1a202b !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme #gamification-overlay-panel .category-tab,
+html.panum-dark-theme #gamification-overlay-panel .category-tab[style*="background: white"],
+html.panum-dark-theme #gamification-overlay-panel .category-tab[style*="background: #ffb300"],
+html.panum-dark-theme #gamification-overlay-panel .category-tab.active {
+  background: #2e3a4a !important;
+  color: #f5d98a !important;
+  border-color: #b68a2e !important;
+}
+
+html.panum-dark-theme #gamification-overlay-panel .achievement-item[style*="background:#f9f9f9"],
+html.panum-dark-theme #gamification-overlay-panel .achievement-item[style*="background: #f9f9f9"],
+html.panum-dark-theme #gamification-overlay-panel .achievement-item[style*="linear-gradient(135deg, #43a04722"],
+html.panum-dark-theme #gamification-overlay-panel .achievement-item[style*="linear-gradient(135deg, rgba(67, 160, 71"],
+html.panum-dark-theme #gamification-overlay-panel .achievement-item[style*="linear-gradient(135deg, rgba(251, 140, 0"],
+html.panum-dark-theme #gamification-overlay-panel .achievement-item[style*="opacity:0.7"] {
+  background: #202836 !important;
+  color: var(--panum-text) !important;
+  opacity: 1 !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background: #f0f9ff"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="background:#f0f9ff"] {
+  background: #192534 !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel [style*="#495057"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="#6c757d"],
+html.panum-dark-theme #notenrechner-calc-panel [style*="#495057"],
+html.panum-dark-theme #notenrechner-custom-panel [style*="#495057"],
+html.panum-dark-theme #improvement-overlay-panel [style*="#495057"],
+html.panum-dark-theme #gamification-overlay-panel [style*="#495057"] {
+  color: var(--panum-text-soft) !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel td,
+html.panum-dark-theme #pluspoints-overlay-panel th,
+html.panum-dark-theme #notenrechner-calc-panel td,
+html.panum-dark-theme #notenrechner-calc-panel th,
+html.panum-dark-theme #notenrechner-custom-panel td,
+html.panum-dark-theme #notenrechner-custom-panel th,
+html.panum-dark-theme #improvement-overlay-panel td,
+html.panum-dark-theme #improvement-overlay-panel th,
+html.panum-dark-theme #gamification-overlay-panel td,
+html.panum-dark-theme #gamification-overlay-panel th {
+  background: transparent !important;
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel [style*="color:#28a745"],
+html.panum-dark-theme #pluspoints-overlay-panel [style*="color: #28a745"] {
+  color: var(--panum-success) !important;
+}
+
+html.panum-dark-theme #pluspoints-overlay-panel #merge-btn,
+html.panum-dark-theme #pluspoints-overlay-panel .unmerge-btn {
+  filter: saturate(0.9) brightness(0.95);
+}
+
+.panum-theme-toggle {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border: 1px solid rgba(120, 139, 166, 0.35);
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, #f7f9fc, #e8edf4);
+  color: #2d435f;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 6px rgba(20, 35, 54, 0.18);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.panum-theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 10px rgba(20, 35, 54, 0.25);
+}
+
+.panum-theme-toggle[data-theme="dark"] {
+  background: linear-gradient(135deg, #21344b, #2d4d70);
+  color: #ffd782;
+  border-color: rgba(157, 197, 255, 0.45);
+}
+
+.panum-theme-toggle[data-theme="light"] {
+  background: linear-gradient(135deg, #fff0c2, #ffd26f);
+  color: #5a3b00;
+  border-color: rgba(211, 164, 66, 0.55);
+}
+
+.panum-theme-guide {
+  position: fixed;
+  top: 72px;
+  left: 12px;
+  max-width: 260px;
+  z-index: 12001;
+  background: #1d2633;
+  color: #e8edf5;
+  border: 1px solid #3a4b60;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.32);
+}
+
+.panum-theme-guide strong {
+  color: #9dc8ff;
+}
+
+.panum-theme-guide::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background: #1d2633;
+  border-left: 1px solid #3a4b60;
+  border-top: 1px solid #3a4b60;
+  transform: rotate(45deg);
+}
+
+html.panum-dark-theme .panum-theme-guide {
+  background: #121923;
+  border-color: #2f3d4d;
+}
+
+html.panum-dark-theme .panum-theme-guide::before {
+  background: #121923;
+  border-left-color: #2f3d4d;
+  border-top-color: #2f3d4d;
+}
+
+html.panum-dark-theme .tbl-header-line,
+html.panum-dark-theme .tbl-header-line.sticky,
+html.panum-dark-theme .tbl-header-line.sticky > div,
+html.panum-dark-theme .cls-table--icons,
+html.panum-dark-theme .cls-table--count,
+html.panum-dark-theme .tabletitle,
+html.panum-dark-theme .cls-table--header {
+  background: #1a2431 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .tbl-header-line.sticky {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.panum-dark-theme .cls-form--header-line,
+html.panum-dark-theme .cls-form--header-line.sticky,
+html.panum-dark-theme .cls-form--header-no-break,
+html.panum-dark-theme .cls-form--formicons,
+html.panum-dark-theme #frm-header-line,
+html.panum-dark-theme #formheader,
+html.panum-dark-theme #formicons,
+html.panum-dark-theme .cls-form--header-line > div,
+html.panum-dark-theme .cls-form--header-line h3 {
+  background: #1a2431 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .cls-form--header-line {
+  box-shadow: -5px 0 0 0 #1a2431, 0 2px 2px 0 rgba(0, 0, 0, 0.32), 0 3px 1px -2px rgba(0, 0, 0, 0.45), 0 -10px 5px 5px #1a2431 !important;
+}
+
+html.panum-dark-theme .cls-form--buttons-container,
+html.panum-dark-theme #buttons-container,
+html.panum-dark-theme .cls-form--buttons-container > .mdl-card,
+html.panum-dark-theme .mdl-card--cls-form,
+html.panum-dark-theme .mdl-card--cls-form > .mdl-card__supporting-text,
+html.panum-dark-theme .mdl-card--cls-form > .mdl-card__actions,
+html.panum-dark-theme #buttons_actions,
+html.panum-dark-theme #timeeditdiv {
+  background: #151d28 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .cls-form--buttons-container {
+  box-shadow: 0 15px 8px 5px #151d28 !important;
+}
+
+html.panum-dark-theme .cls-form--buttons-gradient,
+html.panum-dark-theme #buttons-gradient {
+  background-image: linear-gradient(rgba(21, 29, 40, 0), #151d28) !important;
+}
+
+html.panum-dark-theme .mdl-card--cls-form .mdl-textfield__label,
+html.panum-dark-theme .mdl-card--cls-form .mdl-textfield__input,
+html.panum-dark-theme .mdl-card--cls-form .cls-label,
+html.panum-dark-theme .mdl-card--cls-form p,
+html.panum-dark-theme .mdl-card--cls-form b,
+html.panum-dark-theme .mdl-card--cls-form span,
+html.panum-dark-theme .mdl-card--cls-form div {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme .mdl-card--cls-form .mdl-textfield__input,
+html.panum-dark-theme .mdl-card--cls-form input,
+html.panum-dark-theme .mdl-card--cls-form textarea,
+html.panum-dark-theme .mdl-card--cls-form select {
+  background: #111722 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .sn-incognito-btn,
+html.panum-dark-theme .sn-incognito-btn svg,
+html.panum-dark-theme .sn-incognito-btn svg path {
+  opacity: 1 !important;
+  fill: #9ec8ff !important;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.55));
+}
+
+html.panum-dark-theme .sn-incognito-btn:hover svg,
+html.panum-dark-theme .sn-incognito-btn:hover svg path {
+  fill: #c4ddff !important;
+}
+
+html.panum-dark-theme .sn-incognito-btn.active svg,
+html.panum-dark-theme .sn-incognito-btn.active svg path {
+  fill: #ff6b6b !important;
+}
+
+html.panum-dark-theme .tbl-header-line [style*="color: black"],
+html.panum-dark-theme .tbl-header-line [style*="color:black"],
+html.panum-dark-theme .tbl-header-line .mdl-menu-icon[style*="color: black"],
+html.panum-dark-theme .tbl-header-line .mdl-menu-icon[style*="color:black"] {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme .mdl-menu__item,
+html.panum-dark-theme .mdl-menu__item a,
+html.panum-dark-theme .mdl-menu__item button,
+html.panum-dark-theme .mdl-menu__item .mdl-menu-icon,
+html.panum-dark-theme .mdl-menu__item [style*="color: black"],
+html.panum-dark-theme .mdl-menu__item [style*="color:black"] {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme #clsSublist,
+html.panum-dark-theme .cls-page--navsublist,
+html.panum-dark-theme #clsList,
+html.panum-dark-theme .cls-sublist--option,
+html.panum-dark-theme .cls-sublist--title {
+  background: #161e2a !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme #clsList .mdl-radio__label {
+  color: var(--panum-text) !important;
+  background: transparent !important;
+}
+
+html.panum-dark-theme .cls-sublist--option {
+  display: block;
+  border-radius: 8px;
+  position: relative;
+  min-height: 32px;
+  line-height: 1.3;
+  padding: 6px 10px 6px 34px;
+}
+
+html.panum-dark-theme #clsList .cls-sublist--option .mdl-radio__label {
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+html.panum-dark-theme #clsList .cls-sublist--option .mdl-radio__outer-circle,
+html.panum-dark-theme #clsList .cls-sublist--option .mdl-radio__inner-circle,
+html.panum-dark-theme #clsList .cls-sublist--option .mdl-radio__ripple-container {
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+html.panum-dark-theme .cls-sublist--option.is-checked {
+  background: #2b455f !important;
+}
+
+html.panum-dark-theme .mdl-radio__outer-circle {
+  border-color: #7a8ba3 !important;
+}
+
+html.panum-dark-theme .mdl-radio.is-checked .mdl-radio__outer-circle,
+html.panum-dark-theme .mdl-radio.is-checked .mdl-radio__inner-circle {
+  border-color: #82b7ff !important;
+  background: #82b7ff !important;
+}
+
+html.panum-dark-theme [id^="dropm-container_"],
+html.panum-dark-theme [id^="dropm-container_"][style*="background:#fff"],
+html.panum-dark-theme [id^="dropm-container_"][style*="background: #fff"],
+html.panum-dark-theme [id^="dropm-container_"] [style*="background:#fff"],
+html.panum-dark-theme [id^="dropm-container_"] [style*="background: #fff"] {
+  background: #141c27 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme [id^="dropm-container_"] a,
+html.panum-dark-theme [id^="dropm-container_"] label,
+html.panum-dark-theme [id^="dropm-container_"] .dropm-span-f23,
+html.panum-dark-theme [id^="dropm-container_"] .mdl-checkbox__label {
+  color: var(--panum-text) !important;
+}
+
+html.panum-dark-theme [id^="dropm-container_"] input.small-filter,
+html.panum-dark-theme [id^="dropm-container_"] input[type="text"] {
+  background: #0f151f !important;
+  color: var(--panum-text) !important;
+  border: 1px solid var(--panum-border) !important;
+}
+
+html.panum-dark-theme [id^="dropm-container_"] .mdl-checkbox__box-outline,
+html.panum-dark-theme [id^="dropm-container_"] .mdl-checkbox__tick-outline,
+html.panum-dark-theme [id^="dropm-container_"] .mdl-checkbox__focus-helper {
+  border-color: #7a8ba3 !important;
+}
+
+html.panum-dark-theme .mdl-checkbox.is-checked .mdl-checkbox__box-outline {
+  background: #5fb3ff !important;
+  border-color: #5fb3ff !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small[href*="eventtype=0_stp"] {
+  background: #4d7ea8 !important;
+  color: #f5f9ff !important;
+  border: 1px solid #6f99bc !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small[href*="eventtype=5_trm"] {
+  background: #2f587d !important;
+  color: #f5f9ff !important;
+  border: 1px solid #4f7ca5 !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small[href*="eventtype=1_pru"] {
+  background: rgba(179, 76, 39, 0.2) !important;
+  color: #ffd9cc !important;
+  border: 1px solid #b34c27 !important;
+}
+
+html.panum-dark-theme a.mdl-button.mdl-button--small[href*="eventtype=1_pru"]:hover {
+  background: #b34c27 !important;
+  color: #ffffff !important;
+}
+
+html.panum-dark-theme .tox,
+html.panum-dark-theme .tox-editor-container,
+html.panum-dark-theme .tox .tox-editor-header,
+html.panum-dark-theme .tox .tox-toolbar-overlord,
+html.panum-dark-theme .tox .tox-toolbar__primary,
+html.panum-dark-theme .tox .tox-toolbar__group,
+html.panum-dark-theme .tox .tox-anchorbar,
+html.panum-dark-theme .tox .tox-edit-area,
+html.panum-dark-theme .tox .tox-statusbar,
+html.panum-dark-theme .tox .tox-sidebar,
+html.panum-dark-theme .tox .tox-sidebar__slider,
+html.panum-dark-theme .tox .tox-tbtn,
+html.panum-dark-theme .tox .tox-tbtn__select-label,
+html.panum-dark-theme .tox .tox-statusbar__text-container,
+html.panum-dark-theme .tox .tox-statusbar a,
+html.panum-dark-theme .tox .tox-toolbar-label,
+html.panum-dark-theme .tox .tox-mbtn,
+html.panum-dark-theme .tox .tox-menu,
+html.panum-dark-theme .tox .tox-collection,
+html.panum-dark-theme .tox .tox-collection__item,
+html.panum-dark-theme .tox .tox-dialog,
+html.panum-dark-theme .tox .tox-textfield,
+html.panum-dark-theme .tox .tox-textarea,
+html.panum-dark-theme .tox .tox-selectfield select {
+  background: #141c27 !important;
+  color: var(--panum-text) !important;
+  border-color: var(--panum-border) !important;
+}
+
+html.panum-dark-theme .tox .tox-tbtn svg,
+html.panum-dark-theme .tox .tox-tbtn svg path,
+html.panum-dark-theme .tox .tox-mbtn svg,
+html.panum-dark-theme .tox .tox-mbtn svg path {
+  fill: var(--panum-text) !important;
+}
+
+html.panum-dark-theme .tox .tox-edit-area__iframe {
+  background: #0f151f !important;
+}
