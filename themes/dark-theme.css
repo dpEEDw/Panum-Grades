@@ -44,7 +44,6 @@ html.panum-dark-theme .cls-page--mainmenu-large,
 html.panum-dark-theme .cls-page--mainnav-small,
 html.panum-dark-theme .cls-page--mainnav-small--list,
 html.panum-dark-theme .cls-page--mainmenu-element,
-html.panum-dark-theme .cls-page--mainmenu-subtitle,
 html.panum-dark-theme .cls-page--navlist-spacer-bottom,
 html.panum-dark-theme .dhx_scale_time_slot,
 html.panum-dark-theme .dhx_scale_time_slot_hour_start,
@@ -83,13 +82,18 @@ html.panum-dark-theme textarea,
 html.panum-dark-theme select,
 html.panum-dark-theme button,
 html.panum-dark-theme .mdl-button {
-  background-color: var(--panum-bg-soft) !important;
   color: var(--panum-text) !important;
   border-color: var(--panum-border) !important;
 }
 
-html.panum-dark-theme .mdl-navigation__link,
-html.panum-dark-theme .mdl-navigation__link i,
+html.panum-dark-theme #pluspoints-overlay-btn,
+html.panum-dark-theme #notenrechner-calc-btn,
+html.panum-dark-theme #notenrechner-custom-btn,
+html.panum-dark-theme #improvement-overlay-btn,
+html.panum-dark-theme #gamification-overlay-btn {
+  background-color: var(--panum-bg-soft) !important;
+}
+
 html.panum-dark-theme .cls-page--mainmenu-icon,
 html.panum-dark-theme .cls-page--mainmenu-tooltip,
 html.panum-dark-theme .mdl-tooltip,
@@ -110,6 +114,7 @@ html.panum-dark-theme .cls-page--header-row,
 html.panum-dark-theme .cls-page--header,
 html.panum-dark-theme #sn-nav-global,
 html.panum-dark-theme #nav-main-menu,
+html.panum-dark-theme .mdl-navigation,
 html.panum-dark-theme .cls-page--mainmenu {
   background: linear-gradient(180deg, var(--panum-bg-header), var(--panum-bg-header-soft)) !important;
   color: var(--panum-text) !important;
@@ -201,7 +206,7 @@ html.panum-dark-theme td,
 html.panum-dark-theme th,
 html.panum-dark-theme .mdl-data-table,
 html.panum-dark-theme .mdl-data-table__cell--non-numeric {
-  background-color: #141922 !important;
+  background-color: var(--panum-bg-header) !important;
   border-color: var(--panum-border) !important;
 }
 
@@ -237,6 +242,8 @@ html.panum-dark-theme .dhx_cal_tab,
 html.panum-dark-theme .dhx_cal_today_button,
 html.panum-dark-theme .dhx_cal_prev_button,
 html.panum-dark-theme .dhx_cal_next_button,
+html.panum-dark-theme .btnsubmit,
+html.panum-dark-theme .btnreset,
 html.panum-dark-theme .dhx_cal_date,
 html.panum-dark-theme .dhx_cal_event,
 html.panum-dark-theme .dhx_cal_event_line,
@@ -526,42 +533,83 @@ html.panum-dark-theme #pluspoints-overlay-panel .unmerge-btn {
 }
 
 .panum-theme-toggle {
-  position: relative;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  border: 1px solid rgba(120, 139, 166, 0.35);
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 2px;
+  border: none !important;
+  border-radius: 0;
+  background: transparent !important;
+  color: #2e3e52 !important;
   cursor: pointer;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 4px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  background: linear-gradient(135deg, #f7f9fc, #e8edf4);
-  color: #2d435f;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 6px rgba(20, 35, 54, 0.18);
-  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  vertical-align: middle;
+  line-height: 32px;
+  transform: none;
+  box-shadow: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .panum-theme-toggle:hover {
-  transform: translateY(-1px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 10px rgba(20, 35, 54, 0.25);
+  transform: none;
+  box-shadow: none;
+  opacity: 0.95;
 }
 
 .panum-theme-toggle[data-theme="dark"] {
-  background: linear-gradient(135deg, #21344b, #2d4d70);
-  color: #ffd782;
-  border-color: rgba(157, 197, 255, 0.45);
+  color: #f2c96a !important;
 }
 
 .panum-theme-toggle[data-theme="light"] {
-  background: linear-gradient(135deg, #fff0c2, #ffd26f);
-  color: #5a3b00;
-  border-color: rgba(211, 164, 66, 0.55);
+  color: #2e3e52 !important;
+}
+
+html.panum-dark-theme .panum-theme-toggle {
+  color: #9ec8ff !important;
+}
+
+html.panum-dark-theme .panum-theme-toggle[data-theme="dark"] {
+  color: #ffd782 !important;
+}
+
+html.panum-dark-theme .panum-theme-toggle[data-theme="light"] {
+  color: #9ec8ff !important;
+}
+
+.panum-theme-toggle .panum-theme-toggle-icon {
+  width: 17px;
+  height: 17px;
+  display: block;
+  margin: 0 auto;
+  fill: currentColor;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.panum-theme-toggle .panum-theme-toggle-icon--moon {
+  width: 19px;
+  height: 19px;
+  fill: #ffffff;
+  transform: translate(0.6px, 0.5px);
+}
+
+.panum-theme-toggle .panum-theme-toggle-icon--moon path {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.panum-theme-toggle .panum-theme-toggle-icon--sun {
+  width: 23px;
+  height: 23px;
+  fill: #ffffff;
+  transform: translate(0.6px, 0.5px);
 }
 
 .panum-theme-guide {
@@ -613,7 +661,6 @@ html.panum-dark-theme .tbl-header-line.sticky,
 html.panum-dark-theme .tbl-header-line.sticky > div,
 html.panum-dark-theme .cls-table--icons,
 html.panum-dark-theme .cls-table--count,
-html.panum-dark-theme .tabletitle,
 html.panum-dark-theme .cls-table--header {
   background: #1a2431 !important;
   color: var(--panum-text) !important;
@@ -865,4 +912,51 @@ html.panum-dark-theme .tox .tox-mbtn svg path {
 
 html.panum-dark-theme .tox .tox-edit-area__iframe {
   background: #0f151f !important;
+}
+
+html.panum-dark-theme #tab_link_container {
+  border-bottom: 1px solid var(--panum-border);
+}
+
+html.panum-dark-theme #navigation-list {
+  border-right: 1px solid var(--panum-border);
+}
+
+html.panum-dark-theme #notenExtractorOkMsg {
+  background: var(--panum-bg) !important;
+  color: var(--panum-text);
+}
+
+html.panum-dark-theme .mdl-card--information,
+html.panum-dark-theme .mdl-card--neutral {
+  background: var(--panum-bg-card) !important;
+  border: 1px solid var(--panum-border);
+}
+
+html.panum-dark-theme .mdl-tabs__tab {
+  background: var(--panum-accent-soft);
+}
+
+html.panum-dark-theme .cls-page--navlist-divider {
+  border-top: 1px solid var(--panum-border);
+}
+
+html.panum-dark-theme .mdl-button.mdl-button--colored.mdl-button--raised {
+  background: var(--panum-accent) !important;
+}
+
+html.panum-dark-theme #cls-form-header-sentinel-top,
+html.panum-dark-theme #cls-table-header-sentinel-top {
+  display: none;
+}
+
+html.panum-dark-theme #nav-main-menu.cls-page--mainmenu-large,
+html.panum-dark-theme #nav-main-menu.cls-page--mainmenu-small {
+  box-sizing: border-box;
+  padding-right: 78px !important;
+}
+
+html.panum-dark-theme #timer.timer-value {
+  z-index: 30 !important;
+  pointer-events: none;
 }

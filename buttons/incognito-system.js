@@ -69,8 +69,8 @@
                 }
                 .sn-incognito-btn svg,
                 .sn-incognito-btn svg path {
-                    fill: #8dbef8;
-                    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.45));
+                    fill: #111111;
+                    filter: none;
                 }
                 .sn-incognito-btn:hover {
                     opacity: 1;
