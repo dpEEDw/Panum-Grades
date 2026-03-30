@@ -248,9 +248,6 @@ html.panum-dark-theme .dhx_cal_date,
 html.panum-dark-theme .dhx_cal_event,
 html.panum-dark-theme .dhx_cal_event_line,
 html.panum-dark-theme .dhx_cal_event_clear,
-html.panum-dark-theme .stpt_event_body,
-html.panum-dark-theme .stpt_event_text,
-html.panum-dark-theme .stpt_event_label,
 html.panum-dark-theme .dhx_month_body,
 html.panum-dark-theme .dhx_month_head {
   background-color: #141d2a !important;
@@ -265,13 +262,64 @@ html.panum-dark-theme .dhx_cal_navline {
   color: #eaf1fb !important;
 }
 
-html.panum-dark-theme .stpt_event_body,
-html.panum-dark-theme .stpt_event_text,
-html.panum-dark-theme .stpt_event_label,
-html.panum-dark-theme .dhx_cal_event .stpt_event_body,
-html.panum-dark-theme .dhx_cal_event_line .stpt_event_body {
-  background: #2b455f !important;
-  color: #f3f8ff !important;
+html.panum-dark-theme .dhx_cal_event.stpt_event,
+html.panum-dark-theme .dhx_cal_event_line.stpt_event {
+  --panum-event-base: var(--dhx-scheduler-event-background, #3f6285);
+  background: transparent !important;
+}
+
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background: #77B0D4"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background:#77B0D4"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background: #77B0D4"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background:#77B0D4"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background: #77b0d4"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background:#77b0d4"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background: #77b0d4"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background:#77b0d4"] {
+  --panum-event-base: #77B0D4;
+}
+
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background: #B8DAF2"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background:#B8DAF2"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background: #B8DAF2"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background:#B8DAF2"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background: #b8daf2"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background:#b8daf2"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background: #b8daf2"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background:#b8daf2"] {
+  --panum-event-base: #2f587d;
+}
+
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background: #B34C27"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background:#B34C27"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background: #B34C27"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background:#B34C27"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background: #b34c27"],
+html.panum-dark-theme .dhx_cal_event.stpt_event[style*="--dhx-scheduler-event-background:#b34c27"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background: #b34c27"],
+html.panum-dark-theme .dhx_cal_event_line.stpt_event[style*="--dhx-scheduler-event-background:#b34c27"] {
+  --panum-event-base: #B34C27;
+}
+
+html.panum-dark-theme .dhx_cal_event.stpt_event .stpt_event_title,
+html.panum-dark-theme .dhx_cal_event.stpt_event .stpt_event_body,
+html.panum-dark-theme .dhx_cal_event_line.stpt_event .stpt_event_title,
+html.panum-dark-theme .dhx_cal_event_line.stpt_event .stpt_event_body {
+  background: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), var(--panum-event-base) !important;
+  background: color-mix(in srgb, var(--panum-event-base) 44%, #000000 56%) !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.42);
+}
+
+html.panum-dark-theme .dhx_cal_event.stpt_event .stpt_event_text,
+html.panum-dark-theme .dhx_cal_event.stpt_event .stpt_event_date,
+html.panum-dark-theme .dhx_cal_event.stpt_event .stpt_event_label,
+html.panum-dark-theme .dhx_cal_event_line.stpt_event .stpt_event_text,
+html.panum-dark-theme .dhx_cal_event_line.stpt_event .stpt_event_date,
+html.panum-dark-theme .dhx_cal_event_line.stpt_event .stpt_event_label {
+  background: transparent !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.42);
 }
 
 html.panum-dark-theme a.mdl-button.mdl-button--small,
