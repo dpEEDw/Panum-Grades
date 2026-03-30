@@ -165,7 +165,7 @@
       contentMK.innerHTML = `
         <div style="background: linear-gradient(135deg, #388e3c, #2e7d32); color: white; padding: 20px 18px 16px 18px; margin: 0;">
           <div style="font-size: 20px; font-weight: bold; margin-bottom: 6px;">📊 Pluspunkte Übersicht</div>
-          <div style="font-size: 14px; opacity: 0.9;">Verwalte deine Fach-Sichtbarkeit und sieh deine Punkteverteilung</div>
+          <div style="font-size: 14px; opacity: 0.9;">Verwalte deine Fach-Sichtbarkeit und sieh deine Punkteverteilung. <span style="font-size:12px;font-style:italic;opacity:0.85;">Nur informativ, nicht verbindlich.</span></div>
         </div>
         <div style="padding: 18px; flex: 1;">
           <div style="background: #f8f9fa; border-radius: 8px; padding: 12px; margin-bottom: 16px; border: 1px solid #e9ecef;">

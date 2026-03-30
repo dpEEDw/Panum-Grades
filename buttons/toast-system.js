@@ -11,10 +11,6 @@
 
     const TIPS = [
         "Wusstest du: Du kannst einzelne Buttons im <span class='highlight-popup'>Erweiterungs-Popup</span> an- und ausschalten?",
-        "Wusstest du: Mit dem Notenrechner kannst du deine Wunsch-Note simulieren?",
-        "Wusstest du: Der 'Pluspunkte'-Button hilft dir, den Überblick über deine Bonuspunkte zu behalten?",
-        "Wusstest du: Du kannst sehen, welche Note du brauchst, um deinen Schnitt zu verbessern?",
-        "Wusstest du: Es gibt ein Gamification-System mit Achievements für deine Noten?",
         "Wusstest du: Deine Daten werden sicher lokal in deinem Browser gespeichert?",
         "Wusstest du: Du kannst das Layout anpassen, indem du Buttons im Popup deaktivierst?",
         "Wusstest du: Wenn du fünf mal auf das 📋-emoji im \"Pluspunkte\"-Button klickst, schaltest du ein neuen hidden Button frei!",

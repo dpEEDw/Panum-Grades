@@ -22,6 +22,28 @@
     }
   }
 
+  function getCurrentOutputType() {
+    try {
+      return new URLSearchParams(window.location.search).get('output');
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function isPdfOrPrintOutputPage() {
+    const outputTypeMK = (getCurrentOutputType() || '').toLowerCase();
+    if (outputTypeMK === 'pdf' || outputTypeMK === 'print') {
+      return true;
+    }
+
+    const pathnameMK = (window.location.pathname || '').toLowerCase();
+    if (pathnameMK.includes('/print')) {
+      return true;
+    }
+
+    return false;
+  }
+
   function isGradesPage() {
     return getCurrentPageId() === GRADES_PAGE_ID;
   }
@@ -155,6 +177,15 @@
   }
 
   function ensureThemeToggleButton() {
+    if (isPdfOrPrintOutputPage()) {
+      hideThemeToggleGuide();
+      const existingToggleMK = getThemeToggleButton();
+      if (existingToggleMK) {
+        existingToggleMK.remove();
+      }
+      return;
+    }
+
     const placeToggleButtonMK = (toggleButtonMK) => {
       const menuButtonMK = document.getElementById('sn-main-menu');
       const notificationButtonMK = document.getElementById('sn-notifications');
@@ -237,8 +268,40 @@
     });
   }
 
+  function patchMpDatePickers(enabled) {
+    const pickerNodesMK = document.querySelectorAll('.mp-datepicker, .mp-picker');
+    pickerNodesMK.forEach((pickerNodeMK) => {
+      pickerNodeMK.setAttribute('data-theme', enabled ? 'dark' : 'light');
+    });
+  }
+
+  function patchOverallAverageWarnings(enabled) {
+    const avgCellsMK = document.querySelectorAll(
+      'td[style*="padding-top: 2mm"][style*="border-bottom: 0"], td[style*="padding-top:2mm"][style*="border-bottom:0"]'
+    );
+
+    avgCellsMK.forEach((cellMK) => {
+      const valueTextMK = (cellMK.textContent || '').replace(',', '.').trim();
+      const valueMK = parseFloat(valueTextMK);
+      const isLowAverageMK = !isNaN(valueMK) && valueMK < 4;
+
+      if (enabled && isLowAverageMK) {
+        cellMK.style.setProperty('color', '#ff9800', 'important');
+        cellMK.dataset.panumLowAverageStyled = 'true';
+        return;
+      }
+
+      if (cellMK.dataset.panumLowAverageStyled === 'true') {
+        cellMK.style.removeProperty('color');
+        delete cellMK.dataset.panumLowAverageStyled;
+      }
+    });
+  }
+
   function applyRuntimeDarkThemePatches(enabled) {
     patchTinyMceIframes(enabled);
+    patchMpDatePickers(enabled);
+    patchOverallAverageWarnings(enabled);
   }
 
   function getThemeSettingFromLocalStorage() {
@@ -262,7 +325,7 @@
 
       const observerMK = new MutationObserver(() => {
         const darkEnabledMK = document.documentElement.classList.contains(DARK_THEME_CLASS);
-        patchTinyMceIframes(darkEnabledMK);
+        applyRuntimeDarkThemePatches(darkEnabledMK);
       });
 
       observerMK.observe(targetNodeMK, { childList: true, subtree: true });
@@ -346,8 +409,62 @@
   };
 
   let buttonInstancesMK = {};
+  let debugBridgeRegisteredMK = false;
 
   window.buttonInstancesMK = buttonInstancesMK;
+
+  function registerDebugBridge() {
+    if (debugBridgeRegisteredMK) {
+      return;
+    }
+
+    debugBridgeRegisteredMK = true;
+
+    window.addEventListener('message', (event) => {
+      try {
+        if (event.source !== window || !event.data || event.data.source !== 'panum-debug') {
+          return;
+        }
+
+        if (event.data.action !== 'test-achievement-toast') {
+          return;
+        }
+
+        const messageMK = (typeof event.data.message === 'string' && event.data.message.trim())
+          ? event.data.message
+          : '🏆 Test-Toast: Funktioniert!';
+
+        try {
+          localStorage.setItem('buttonEnabled_achievements', 'true');
+        } catch (error) {
+          console.warn('Could not enable achievements for debug toast:', error);
+        }
+
+        const instanceMK = window.buttonInstancesMK && window.buttonInstancesMK.gamification
+          ? window.buttonInstancesMK.gamification
+          : null;
+
+        if (instanceMK && typeof instanceMK.showAchievementToast === 'function') {
+          instanceMK.showAchievementToast(messageMK);
+          window.postMessage({
+            source: 'panum-debug',
+            action: 'test-achievement-toast-result',
+            ok: true
+          }, '*');
+          return;
+        }
+
+        window.postMessage({
+          source: 'panum-debug',
+          action: 'test-achievement-toast-result',
+          ok: false,
+          reason: 'gamification-not-ready'
+        }, '*');
+      } catch (error) {
+        console.warn('Panum debug bridge error:', error);
+      }
+    });
+  }
 
   function createFallbackButtons() {
     const buttonsMK = [
@@ -1076,6 +1193,13 @@
 
   async function initializeSystem() {
     loadThemeSetting();
+    registerDebugBridge();
+
+    if (isPdfOrPrintOutputPage()) {
+      hideThemeToggleGuide();
+      return;
+    }
+
     ensureThemeToggleButton();
 
     if (!isGradesPage()) {

@@ -13,12 +13,48 @@
       
       // Achievement system data
       this.subjectsByCategory = {
-        naturwissenschaften: ["Biologie", "Bio", "Chemie", "Chem", "Physik", "Phys", "Mathematik", "Mathe", "Math", "Informatik", "Info", "Computer"],
-        sprache: ["Deutsch", "DE", "Englisch", "EN", "English", "Französisch", "FR", "Francais", "Spanisch", "ES", "Español", "Latein", "LA", "Latin"],
-        gesellschaft: ["Geografie", "Geographie", "GG", "Geo", "Geschichte", "Hist", "History", "Wirtschaft und Recht", "WuR", "Wirtschaft", "Recht"],
-        kunst: ["Bildnerisches Gestalten", "BG", "Kunst", "Art", "Musik", "Mus", "Music", "Theater", "Drama"],
-        sport: ["Sport", "SP", "Sports", "Schulsport", "Leichtathletik"],
-        wahlfaecher: ["Projektarbeit", "Projekt", "Ergänzungsfach", "EF", "Schach", "Chess"]
+        naturwissenschaften: [
+          "Biologie", "Bio", "BIO", "BI", "B",
+          "Chemie", "Chem", "CHE", "CH", "C",
+          "Physik", "Phys", "PHY", "PH", "P",
+          "Mathematik", "Mathe", "Math", "MATH", "MAT", "MA", "M",
+          "Informatik", "Info", "Computer", "ICT", "ITG", "Programmieren", "Coding",
+          "Naturwissenschaft", "Naturwissenschaften", "Nawi"
+        ],
+        sprache: [
+          "Deutsch", "DE", "D", "DEU", "GER", "German",
+          "Englisch", "EN", "E", "ENG", "English",
+          "Französisch", "Franzoesisch", "Franzosisch", "FR", "F", "FRA", "Francais", "French",
+          "Spanisch", "ES", "SPA", "Espanol", "Español",
+          "Latein", "LA", "LAT", "Latin",
+          "Italienisch", "IT", "ITA", "Italian",
+          "Russisch", "RU", "RUS",
+          "Griechisch", "GR", "GRE",
+          "Portugiesisch", "PT", "POR"
+        ],
+        gesellschaft: [
+          "Geografie", "Geographie", "GG", "GEO", "GE",
+          "Geschichte", "GS", "GES", "HIS", "HIST", "History",
+          "Wirtschaft und Recht", "WuR", "Wirtschaft", "Recht", "WR",
+          "Politik", "POL", "Sozialkunde", "Sozi",
+          "Ethik", "Religion", "Philosophie", "Gesellschaft"
+        ],
+        kunst: [
+          "Bildnerisches Gestalten", "BG", "BK",
+          "Kunst", "KU", "ART", "Art",
+          "Musik", "MU", "MUS", "Music",
+          "Theater", "Drama", "Darstellen", "Design", "Gestalten"
+        ],
+        sport: [
+          "Sport", "SP", "S", "PE", "Sports", "Schulsport",
+          "Leichtathletik", "Turnen", "Gym", "Gymnastik", "Schwimmen", "Athletik"
+        ],
+        wahlfaecher: [
+          "Projektarbeit", "Projekt", "PRJ", "PROJ",
+          "Ergänzungsfach", "Erganzungsfach", "EF",
+          "Wahlfach", "WPF", "WAHL", "Freifach",
+          "Schach", "Chess", "Psychologie", "PS", "Debatte", "Robotik"
+        ]
       };
     }
 
@@ -57,14 +93,146 @@
       }
     }
 
-    getFachKategorie(fachNameMK) {
+    getFachKategorie(fachNameMK, fachCodeMK = '', extractedCategoryMK = '') {
+      const knownCategoriesMK = new Set([
+        'naturwissenschaften',
+        'sprache',
+        'gesellschaft',
+        'kunst',
+        'sport',
+        'wahlfaecher',
+        'sonstige'
+      ]);
+
+      const extractedNormalizedMK = this.normalizeTextMK(extractedCategoryMK);
+      if (knownCategoriesMK.has(extractedNormalizedMK) && extractedNormalizedMK !== 'sonstige') {
+        return extractedNormalizedMK;
+      }
+
+      const searchValuesMK = [fachNameMK, fachCodeMK].filter(Boolean);
+      const normalizedValuesMK = searchValuesMK.map((valueMK) => this.normalizeTextMK(valueMK));
+      const tokensMK = new Set();
+      normalizedValuesMK.forEach((valueMK) => {
+        this.tokenizeTextMK(valueMK).forEach((tokenMK) => tokensMK.add(tokenMK));
+      });
+
+      let primaryCodeMK = '';
+      const codeSourceMK = String(fachCodeMK || fachNameMK || '').trim();
+      if (codeSourceMK) {
+        const firstChunkMK = codeSourceMK.split(/[\s\-_]/).find(Boolean) || '';
+        const lettersMK = firstChunkMK.replace(/[^A-Za-z]/g, '');
+        if (lettersMK.length >= 1 && lettersMK.length <= 6) {
+          primaryCodeMK = lettersMK.toUpperCase();
+        }
+      }
+
+      const categoryByCodeMK = {
+        D: 'sprache',
+        DE: 'sprache',
+        DEU: 'sprache',
+        GER: 'sprache',
+        E: 'sprache',
+        EN: 'sprache',
+        ENG: 'sprache',
+        F: 'sprache',
+        FR: 'sprache',
+        FRA: 'sprache',
+        ES: 'sprache',
+        SPA: 'sprache',
+        IT: 'sprache',
+        ITA: 'sprache',
+        L: 'sprache',
+        LA: 'sprache',
+        LAT: 'sprache',
+        RU: 'sprache',
+        RUS: 'sprache',
+        PT: 'sprache',
+        POR: 'sprache',
+        B: 'naturwissenschaften',
+        BI: 'naturwissenschaften',
+        BIO: 'naturwissenschaften',
+        C: 'naturwissenschaften',
+        CH: 'naturwissenschaften',
+        CHE: 'naturwissenschaften',
+        P: 'naturwissenschaften',
+        PH: 'naturwissenschaften',
+        PHY: 'naturwissenschaften',
+        M: 'naturwissenschaften',
+        MA: 'naturwissenschaften',
+        MAT: 'naturwissenschaften',
+        MATH: 'naturwissenschaften',
+        IN: 'naturwissenschaften',
+        INFO: 'naturwissenschaften',
+        INF: 'naturwissenschaften',
+        ICT: 'naturwissenschaften',
+        NAWI: 'naturwissenschaften',
+        NW: 'naturwissenschaften',
+        G: 'gesellschaft',
+        GG: 'gesellschaft',
+        GE: 'gesellschaft',
+        GS: 'gesellschaft',
+        GES: 'gesellschaft',
+        GEO: 'gesellschaft',
+        HIS: 'gesellschaft',
+        HIST: 'gesellschaft',
+        WR: 'gesellschaft',
+        WUR: 'gesellschaft',
+        POL: 'gesellschaft',
+        SOZ: 'gesellschaft',
+        ETH: 'gesellschaft',
+        REL: 'gesellschaft',
+        MU: 'kunst',
+        MUS: 'kunst',
+        BG: 'kunst',
+        BK: 'kunst',
+        KU: 'kunst',
+        ART: 'kunst',
+        DRA: 'kunst',
+        S: 'sport',
+        SP: 'sport',
+        PE: 'sport',
+        SPORT: 'sport',
+        PS: 'wahlfaecher'
+      };
+
+      if (primaryCodeMK) {
+        const codeCandidatesMK = [
+          primaryCodeMK,
+          primaryCodeMK.slice(0, 3),
+          primaryCodeMK.slice(0, 2),
+          primaryCodeMK.slice(0, 1)
+        ].filter(Boolean);
+
+        for (const candidateMK of codeCandidatesMK) {
+          if (categoryByCodeMK[candidateMK]) {
+            return categoryByCodeMK[candidateMK];
+          }
+        }
+      }
+
       for (const [kategorieMK, faecherMK] of Object.entries(this.subjectsByCategory)) {
         for (const fachMK of faecherMK) {
-          if (fachNameMK.toLowerCase().includes(fachMK.toLowerCase())) {
+          const normalizedHintMK = this.normalizeTextMK(fachMK);
+          if (!normalizedHintMK) continue;
+
+          // Short hints (like DE, EN, MA) are matched as tokens only.
+          if (normalizedHintMK.length <= 3) {
+            if (tokensMK.has(normalizedHintMK)) {
+              return kategorieMK;
+            }
+            continue;
+          }
+
+          if (normalizedValuesMK.some((valueMK) => valueMK.includes(normalizedHintMK))) {
             return kategorieMK;
           }
         }
       }
+
+      if (knownCategoriesMK.has(extractedNormalizedMK)) {
+        return extractedNormalizedMK;
+      }
+
       return 'sonstige';
     }
 
@@ -357,6 +525,12 @@
 
         { id: "comeback", icon: "📈", text: (fach) => `Comeback - Starke Verbesserung${fach ? " in " + fach : ""}!`, difficulty: "medium", category: "verbesserung" },
         { id: "risingStar", icon: "🚀", text: (fach) => `Aufsteiger - 3x verbessert${fach ? " in " + fach : ""}!`, difficulty: "medium", category: "verbesserung" },
+        { id: "phoenixRise", icon: "🦅", text: (fach) => `Phönix - Von <4.0 auf >=5.0${fach ? " in " + fach : ""}!`, difficulty: "hard", category: "verbesserung" },
+        { id: "safeRun", icon: "🛡️", text: () => "Nerven aus Stahl - 10 bestandene Noten in Folge!", difficulty: "hard", category: "bestehen" },
+        { id: "monthRunner", icon: "📅", text: (monat) => `Monatsmaschine - 5 Noten in ${monat || "einem Monat"}!`, difficulty: "medium", category: "motivation" },
+        { id: "heavyLifter", icon: "🏋️", text: (fach) => `Schwergewicht - Gewichtung >=2 mit Note >=5.0${fach ? " in " + fach : ""}!`, difficulty: "medium", category: "spezial" },
+        { id: "categoryChampion", icon: "🌈", text: () => "Kategorien-Meister - 3 Kategorien mit Schnitt >=5.0!", difficulty: "hard", category: "kategorien" },
+        { id: "subjectElite", icon: "🎓", text: () => "Fach-Elite - 4 Fächer mit Schnitt >=5.0!", difficulty: "medium", category: "genie" },
         { id: "rollercoaster", icon: "🎢", text: (fach) => `Achterbahn - Notenunterschied > 2.5${fach ? " in " + fach : ""}!`, difficulty: "medium", category: "spezial" },
         { id: "mixedBag", icon: "🎭", text: (fach) => `Alles dabei - 6.0 und <4.0${fach ? " in " + fach : ""}!`, difficulty: "medium", category: "spezial" },
         { id: "balanced", icon: "⚖️", text: () => "Perfekte Balance - Schnitt genau .0 oder .5!", difficulty: "medium", category: "spezial" },
@@ -391,209 +565,588 @@
       return "Achievement freigeschaltet!";
     }
 
+    normalizeTextMK(valueMK) {
+      return String(valueMK || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    tokenizeTextMK(valueMK) {
+      return this.normalizeTextMK(valueMK)
+        .split(/[^a-z0-9]+/g)
+        .filter(Boolean);
+    }
+
+    parseGradeValueMK(valueMK) {
+      if (typeof valueMK === 'number') {
+        return Number.isFinite(valueMK) ? valueMK : NaN;
+      }
+
+      if (typeof valueMK === 'string') {
+        const parsedMK = parseFloat(valueMK.replace(',', '.').trim());
+        return Number.isFinite(parsedMK) ? parsedMK : NaN;
+      }
+
+      return NaN;
+    }
+
+    parseDateStringMK(dateTextMK) {
+      if (typeof dateTextMK !== 'string') {
+        return null;
+      }
+
+      const trimmedDateMK = dateTextMK.trim();
+      const matchMK = trimmedDateMK.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+      if (!matchMK) {
+        return null;
+      }
+
+      const dayMK = parseInt(matchMK[1], 10);
+      const monthMK = parseInt(matchMK[2], 10);
+      const yearMK = parseInt(matchMK[3], 10);
+      const parsedDateMK = new Date(yearMK, monthMK - 1, dayMK);
+
+      if (
+        Number.isNaN(parsedDateMK.getTime()) ||
+        parsedDateMK.getFullYear() !== yearMK ||
+        parsedDateMK.getMonth() !== monthMK - 1 ||
+        parsedDateMK.getDate() !== dayMK
+      ) {
+        return null;
+      }
+
+      return parsedDateMK;
+    }
+
+    buildSubjectMetaMK(fachMK, fallbackIndexMK = 0) {
+      const fachCodeMK = String((fachMK && fachMK.fachCode) || '').trim();
+      const fachLangNameMK = String((fachMK && fachMK.fachLangName) || '').trim();
+      const fachNameMK = String((fachMK && fachMK.fach) || '').trim();
+      const displayNameMK = fachLangNameMK || fachNameMK || fachCodeMK || `Fach ${fallbackIndexMK + 1}`;
+
+      const rawValuesMK = [fachLangNameMK, fachNameMK, fachCodeMK].filter(Boolean);
+      const normalizedValuesMK = rawValuesMK.map((valueMK) => this.normalizeTextMK(valueMK));
+      const tokenSetMK = new Set();
+      normalizedValuesMK.forEach((valueMK) => {
+        this.tokenizeTextMK(valueMK).forEach((tokenMK) => tokenSetMK.add(tokenMK));
+      });
+
+      let primaryCodeMK = '';
+      const codeSourceMK = fachCodeMK || fachLangNameMK || fachNameMK;
+      if (codeSourceMK) {
+        const firstChunkMK = codeSourceMK.split(/[\s\-_]/).find(Boolean) || '';
+        const lettersOnlyMK = firstChunkMK.replace(/[^A-Za-z]/g, '');
+        if (lettersOnlyMK.length >= 1 && lettersOnlyMK.length <= 6) {
+          primaryCodeMK = lettersOnlyMK.toUpperCase();
+          tokenSetMK.add(primaryCodeMK.toLowerCase());
+        }
+      }
+
+      return {
+        displayName: displayNameMK,
+        code: fachCodeMK,
+        normalizedValues: normalizedValuesMK,
+        tokenSet: tokenSetMK,
+        primaryCode: primaryCodeMK
+      };
+    }
+
+    subjectMatchesMK(subjectMetaMK, configMK = {}) {
+      if (!subjectMetaMK) {
+        return false;
+      }
+
+      const codesMK = Array.isArray(configMK.codes) ? configMK.codes : [];
+      const tokensMK = Array.isArray(configMK.tokens) ? configMK.tokens : [];
+      const containsMK = Array.isArray(configMK.contains) ? configMK.contains : [];
+
+      if (codesMK.length > 0 && subjectMetaMK.primaryCode) {
+        const matchedByCodeMK = codesMK.some((codeMK) => String(codeMK || '').toUpperCase() === subjectMetaMK.primaryCode);
+        if (matchedByCodeMK) {
+          return true;
+        }
+      }
+
+      if (tokensMK.length > 0) {
+        const matchedByTokenMK = tokensMK.some((tokenMK) => {
+          const normalizedTokenMK = this.normalizeTextMK(tokenMK);
+          return normalizedTokenMK && subjectMetaMK.tokenSet.has(normalizedTokenMK);
+        });
+
+        if (matchedByTokenMK) {
+          return true;
+        }
+      }
+
+      if (containsMK.length > 0) {
+        const matchedByContainsMK = containsMK.some((containsTextMK) => {
+          const normalizedContainsMK = this.normalizeTextMK(containsTextMK);
+          return normalizedContainsMK && subjectMetaMK.normalizedValues.some((valueMK) => valueMK.includes(normalizedContainsMK));
+        });
+
+        if (matchedByContainsMK) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    sortGradeEntriesMK(entriesMK) {
+      return [...entriesMK].sort((aMK, bMK) => {
+        const hasDateAMK = !!aMK.dateObj;
+        const hasDateBMK = !!bMK.dateObj;
+
+        if (hasDateAMK && hasDateBMK) {
+          const timeDiffMK = aMK.dateObj.getTime() - bMK.dateObj.getTime();
+          if (timeDiffMK !== 0) {
+            return timeDiffMK;
+          }
+        } else if (hasDateAMK !== hasDateBMK) {
+          return hasDateAMK ? -1 : 1;
+        }
+
+        return aMK.order - bMK.order;
+      });
+    }
+
+    isApproxGradeMK(valueMK, targetMK, toleranceMK = 0.05) {
+      return Math.abs(valueMK - targetMK) <= toleranceMK;
+    }
+
     processAchievements(notenDatenMK) {
       const achievedMK = {};
       const detailsMK = {};
       
-      if (!notenDatenMK || !notenDatenMK.length) return { achieved: achievedMK, details: detailsMK };
-      
+      if (!Array.isArray(notenDatenMK) || notenDatenMK.length === 0) {
+        return { achieved: achievedMK, details: detailsMK };
+      }
+
       let totalGradesMK = 0;
-      let allGradesMK = [];
-      let subjectCountMK = notenDatenMK.length;
       let totalSumMK = 0;
       let totalWeightMK = 0;
+      let validSubjectCountMK = 0;
       let allPassedMK = true;
-      let count6 = 0;
-      let count5 = 0;
-      let countFail = 0;
-      
-      const catStats = {
-        naturwissenschaften: { sum: 0, weight: 0, count: 0, passed: true },
-        sprache: { sum: 0, weight: 0, count: 0, count5: 0, passed: true },
-        kunst: { sum: 0, weight: 0, count: 0, passed: true },
-        sport: { sum: 0, weight: 0, count: 0, passed: true },
-        gesellschaft: { sum: 0, weight: 0, count: 0, passed: true },
-        sonstige: { sum: 0, weight: 0, count: 0, passed: true }
-      };
+      let count6MK = 0;
+      let hasBelowThreeFiveMK = false;
+      let languageSubjectsOverFiveMK = 0;
+      let subjectsOverFiveMK = 0;
+      let sequenceMK = 0;
+      const monthGradeCountMK = new Map();
 
-      let globalStreak6 = 0;
-      let globalStreakGood = 0;
-      let maxGlobalStreak6 = 0;
-      let maxGlobalStreakGood = 0;
+      const allGradesMK = [];
+      const categoryKeysMK = ['naturwissenschaften', 'sprache', 'gesellschaft', 'kunst', 'sport', 'wahlfaecher', 'sonstige'];
+      const catStatsMK = {};
+      categoryKeysMK.forEach((categoryMK) => {
+        catStatsMK[categoryMK] = { sum: 0, weight: 0, count: 0, passed: true };
+      });
 
-      for (const fachMK of notenDatenMK) {
-        if (!fachMK.noten || !fachMK.noten.length) continue;
-        
-        const fachNameMK = fachMK.fachLangName || fachMK.fach || '';
-        const fachLower = fachNameMK.toLowerCase();
-        const kategorieMK = this.getFachKategorie(fachNameMK);
-        const gradesMK = fachMK.noten;
-        const weightsMK = fachMK.gewichtung || gradesMK.map(() => 1);
-        const datesMK = fachMK.daten || [];
-        
-        totalGradesMK += gradesMK.length;
-        
-        const weightedSumMK = gradesMK.reduce((sum, grade, idx) => sum + (grade * weightsMK[idx]), 0);
-        const subjectWeightMK = weightsMK.reduce((sum, weight) => sum + weight, 0);
+      notenDatenMK.forEach((fachMK, fachIndexMK) => {
+        if (!fachMK || !Array.isArray(fachMK.noten) || fachMK.noten.length === 0) {
+          return;
+        }
+
+        const subjectMetaMK = this.buildSubjectMetaMK(fachMK, fachIndexMK);
+        const categoryMK = this.getFachKategorie(subjectMetaMK.displayName, subjectMetaMK.code, fachMK.kategorie);
+        const rawWeightsMK = Array.isArray(fachMK.gewichtungen)
+          ? fachMK.gewichtungen
+          : Array.isArray(fachMK.gewichtung)
+            ? fachMK.gewichtung
+            : [];
+        const rawDatesMK = Array.isArray(fachMK.daten) ? fachMK.daten : [];
+        const gradeEntriesMK = [];
+
+        fachMK.noten.forEach((rawGradeMK, gradeIndexMK) => {
+          const gradeMK = this.parseGradeValueMK(rawGradeMK);
+          if (!Number.isFinite(gradeMK)) {
+            return;
+          }
+
+          let weightMK = this.parseGradeValueMK(rawWeightsMK[gradeIndexMK]);
+          if (!Number.isFinite(weightMK) || weightMK <= 0) {
+            weightMK = 1;
+          }
+
+          const dateTextMK = typeof rawDatesMK[gradeIndexMK] === 'string' ? rawDatesMK[gradeIndexMK].trim() : '';
+          const dateObjMK = this.parseDateStringMK(dateTextMK);
+
+          gradeEntriesMK.push({
+            note: gradeMK,
+            weight: weightMK,
+            date: dateTextMK,
+            dateObj: dateObjMK,
+            order: sequenceMK++
+          });
+        });
+
+        if (gradeEntriesMK.length === 0) {
+          return;
+        }
+
+        validSubjectCountMK += 1;
+        totalGradesMK += gradeEntriesMK.length;
+
+        const weightedSumMK = gradeEntriesMK.reduce((sumMK, entryMK) => sumMK + entryMK.note * entryMK.weight, 0);
+        const subjectWeightMK = gradeEntriesMK.reduce((sumMK, entryMK) => sumMK + entryMK.weight, 0);
         const subjectAvgMK = subjectWeightMK > 0 ? weightedSumMK / subjectWeightMK : 0;
-        
+
         totalSumMK += weightedSumMK;
         totalWeightMK += subjectWeightMK;
-        
-        if (catStats[kategorieMK]) {
-          catStats[kategorieMK].sum += weightedSumMK;
-          catStats[kategorieMK].weight += subjectWeightMK;
-          catStats[kategorieMK].count++;
-          if (subjectAvgMK >= 5.0) catStats[kategorieMK].count5++;
-          if (subjectAvgMK < 4.0) catStats[kategorieMK].passed = false;
+
+        if (subjectAvgMK >= 5.0) {
+          subjectsOverFiveMK += 1;
         }
 
-        if (gradesMK.some(n => n < 4.0)) allPassedMK = false;
+        if (!catStatsMK[categoryMK]) {
+          catStatsMK[categoryMK] = { sum: 0, weight: 0, count: 0, passed: true };
+        }
+        catStatsMK[categoryMK].sum += weightedSumMK;
+        catStatsMK[categoryMK].weight += subjectWeightMK;
+        catStatsMK[categoryMK].count += 1;
+        if (subjectAvgMK < 4.0) {
+          catStatsMK[categoryMK].passed = false;
+        }
 
-        if (gradesMK.length >= 2) {
-            for(let i=1; i<gradesMK.length; i++) {
-                if (gradesMK[i] - gradesMK[i-1] >= 1.5) {
-                    achievedMK.comeback = true;
-                    detailsMK.comeback = fachNameMK;
-                }
+        if (gradeEntriesMK.some((entryMK) => entryMK.note < 4.0)) {
+          allPassedMK = false;
+        }
+        if (gradeEntriesMK.some((entryMK) => entryMK.note < 3.5)) {
+          hasBelowThreeFiveMK = true;
+        }
+
+        const orderedSubjectEntriesMK = this.sortGradeEntriesMK(gradeEntriesMK);
+
+        if (orderedSubjectEntriesMK.length >= 2) {
+          for (let gradeIndexMK = 1; gradeIndexMK < orderedSubjectEntriesMK.length; gradeIndexMK++) {
+            const diffMK = orderedSubjectEntriesMK[gradeIndexMK].note - orderedSubjectEntriesMK[gradeIndexMK - 1].note;
+            if (diffMK >= 1.5) {
+              achievedMK.comeback = true;
+              detailsMK.comeback = subjectMetaMK.displayName;
+              break;
             }
-            
-            let improveStreak = 0;
-            for(let i=1; i<gradesMK.length; i++) {
-                if (gradesMK[i] > gradesMK[i-1]) improveStreak++;
-                else improveStreak = 0;
-                if (improveStreak >= 3) {
-                    achievedMK.risingStar = true;
-                    detailsMK.risingStar = fachNameMK;
-                }
+          }
+
+          let improveStreakMK = 0;
+          for (let gradeIndexMK = 1; gradeIndexMK < orderedSubjectEntriesMK.length; gradeIndexMK++) {
+            if (orderedSubjectEntriesMK[gradeIndexMK].note > orderedSubjectEntriesMK[gradeIndexMK - 1].note) {
+              improveStreakMK += 1;
+            } else {
+              improveStreakMK = 0;
             }
-        }
 
-        const minGrade = Math.min(...gradesMK);
-        const maxGrade = Math.max(...gradesMK);
-        if (maxGrade - minGrade > 2.5) {
-            achievedMK.rollercoaster = true;
-            detailsMK.rollercoaster = fachNameMK;
-        }
-        
-        if (gradesMK.length >= 3 && (maxGrade - minGrade) === 0) {
-            achievedMK.consistency = true;
-            detailsMK.consistency = fachNameMK;
-        }
-        
-        if (gradesMK.includes(6.0) && gradesMK.some(n => n < 4.0)) {
-            achievedMK.mixedBag = true;
-            detailsMK.mixedBag = fachNameMK;
-        }
-        
-        if (gradesMK.filter(n => n === 4.0).length >= 3) {
-            achievedMK.sniper = true;
-            detailsMK.sniper = fachNameMK;
-        }
-
-        if (fachLower.includes('mathe') || fachLower.includes('math')) {
-            if (subjectAvgMK > 4.0) achievedMK.mathStart = true;
-            if (subjectAvgMK > 5.0) achievedMK.mathPro = true;
-            if (subjectAvgMK > 5.5) achievedMK.mathGenius = true;
-        }
-        
-        if (fachLower.includes('deutsch') || fachLower === 'de') {
-            if (subjectAvgMK > 5.0) achievedMK.germanPoet = true;
-            if (subjectAvgMK > 5.5) achievedMK.germanGoethe = true;
-        }
-        
-        if (fachLower.includes('englisch') || fachLower.includes('english') || fachLower === 'en') {
-            if (subjectAvgMK > 5.0) achievedMK.englishSpeaker = true;
-            if (subjectAvgMK > 5.5) achievedMK.englishNative = true;
-        }
-        
-        if (fachLower.includes('franz') || fachLower.includes('francais') || fachLower === 'fr') {
-            if (subjectAvgMK > 4.0) achievedMK.frenchBonjour = true;
-            if (subjectAvgMK > 5.0) achievedMK.frenchBaguette = true;
-            if (subjectAvgMK > 5.5) achievedMK.frenchEiffel = true;
-        }
-        
-        if (fachLower.includes('info') || fachLower.includes('computer')) {
-            if (subjectAvgMK > 5.5) achievedMK.hacker = true;
-        }
-        
-        if (fachLower.includes('geschichte') || fachLower.includes('hist') || fachLower.includes('gs') || fachLower.includes('geo')) {
-            if (subjectAvgMK > 4.5) achievedMK.explorer = true;
-            if (subjectAvgMK > 5.0) achievedMK.historian = true;
-            if (subjectAvgMK > 5.5) achievedMK.timeTraveler = true;
-        }
-        
-        if (kategorieMK === 'naturwissenschaften') {
-            if (subjectAvgMK > 4.5) achievedMK.labRat = true;
-            if (fachLower.includes('bio') && subjectAvgMK > 5.0) achievedMK.bioFan = true;
-            if (fachLower.includes('chem') && subjectAvgMK > 5.0) achievedMK.chemPro = true;
-            if (fachLower.includes('phys') && subjectAvgMK > 5.0) achievedMK.physEinstein = true;
-        }
-        
-        if (kategorieMK === 'kunst') {
-            if (subjectAvgMK > 5.0) achievedMK.creative = true;
-            if (subjectAvgMK > 5.5) achievedMK.virtuoso = true;
-            if ((fachLower.includes('musik') || fachLower.includes('music')) && subjectAvgMK > 5.0) achievedMK.musicMozart = true;
-            if ((fachLower.includes('bildnerisch') || fachLower.includes('bg') || fachLower.includes('kunst') || fachLower.includes('art')) && subjectAvgMK > 5.0) achievedMK.artPicasso = true;
-        }
-        
-        if (fachLower.includes('geo') && subjectAvgMK > 5.0) achievedMK.geoWorld = true;
-
-        if (kategorieMK === 'sport') {
-            if (subjectAvgMK > 5.0) achievedMK.athlete = true;
-            if (subjectAvgMK > 5.5) achievedMK.olympian = true;
-        }
-
-        gradesMK.forEach((nMK, idxMK) => {
-            allGradesMK.push({ note: nMK, fach: fachNameMK, date: datesMK[idxMK] });
-            
-            if (nMK === 6.0) count6++;
-            if (nMK >= 5.0) count5++;
-            if (nMK < 4.0) countFail++;
-            
-            if (nMK === 6.0 && !achievedMK.first6) { achievedMK.first6 = true; detailsMK.first6 = fachNameMK; }
-            if (nMK >= 5.5 && !achievedMK.first55) { achievedMK.first55 = true; detailsMK.first55 = fachNameMK; }
-            if (nMK >= 5.0 && !achievedMK.first5) { achievedMK.first5 = true; detailsMK.first5 = fachNameMK; }
-            if (nMK >= 4.5 && !achievedMK.first45) { achievedMK.first45 = true; detailsMK.first45 = fachNameMK; }
-            if (nMK >= 4.0 && !achievedMK.first4) { achievedMK.first4 = true; detailsMK.first4 = fachNameMK; }
-            if (nMK < 4.0 && !achievedMK.firstFail) { achievedMK.firstFail = true; detailsMK.firstFail = fachNameMK; }
-            if (nMK <= 3.0 && !achievedMK.first3) { achievedMK.first3 = true; detailsMK.first3 = fachNameMK; }
-            if (nMK <= 2.0 && !achievedMK.first2) { achievedMK.first2 = true; detailsMK.first2 = fachNameMK; }
-            if (nMK === 1.0 && !achievedMK.bottomBarrel) { achievedMK.bottomBarrel = true; detailsMK.bottomBarrel = fachNameMK; }
-            if (nMK > 6.0 && !achievedMK.overSix) { achievedMK.overSix = true; detailsMK.overSix = fachNameMK; }
-
-            if (datesMK[idxMK]) {
-                const parts = datesMK[idxMK].split('.');
-                if (parts.length === 3) {
-                    const d = new Date(parts[2], parts[1]-1, parts[0]);
-                    const day = d.getDay();
-                    const month = d.getMonth();
-                    
-                    if (day === 1 && nMK === 6.0) { achievedMK.mondayMotivation = true; detailsMK.mondayMotivation = fachNameMK; }
-                    if (day === 5 && nMK === 6.0) { achievedMK.fridayFeeling = true; detailsMK.fridayFeeling = fachNameMK; }
-                    if (day === 0 || day === 6) { achievedMK.weekendWarrior = true; detailsMK.weekendWarrior = fachNameMK; }
-                    
-                    if (day === 5 && parseInt(parts[0]) === 13) {
-                        if (nMK >= 5.0) { achievedMK.luckyDay = true; detailsMK.luckyDay = fachNameMK; }
-                        if (nMK < 4.0) { achievedMK.badLuck = true; detailsMK.badLuck = fachNameMK; }
-                    }
-                    
-                    if ((month >= 5 && month <= 7) && nMK >= 5.0) { achievedMK.summerVibes = true; detailsMK.summerVibes = fachNameMK; }
-                    if ((month === 11 || month <= 1) && nMK >= 5.0) { achievedMK.winterWonder = true; detailsMK.winterWonder = fachNameMK; }
-                }
+            if (improveStreakMK >= 3) {
+              achievedMK.risingStar = true;
+              detailsMK.risingStar = subjectMetaMK.displayName;
+              break;
             }
+          }
+
+          let hadLowGradeBeforeMK = false;
+          for (const entryMK of orderedSubjectEntriesMK) {
+            if (entryMK.note < 4.0) {
+              hadLowGradeBeforeMK = true;
+              continue;
+            }
+
+            if (hadLowGradeBeforeMK && entryMK.note >= 5.0) {
+              achievedMK.phoenixRise = true;
+              detailsMK.phoenixRise = subjectMetaMK.displayName;
+              break;
+            }
+          }
+        }
+
+        const subjectNotesMK = gradeEntriesMK.map((entryMK) => entryMK.note);
+        const minGradeMK = Math.min(...subjectNotesMK);
+        const maxGradeMK = Math.max(...subjectNotesMK);
+
+        if (maxGradeMK - minGradeMK > 2.5) {
+          achievedMK.rollercoaster = true;
+          detailsMK.rollercoaster = subjectMetaMK.displayName;
+        }
+
+        if (subjectNotesMK.length >= 3 && Math.abs(maxGradeMK - minGradeMK) < 0.001) {
+          achievedMK.consistency = true;
+          detailsMK.consistency = subjectMetaMK.displayName;
+        }
+
+        if (subjectNotesMK.some((gradeMK) => this.isApproxGradeMK(gradeMK, 6.0)) && subjectNotesMK.some((gradeMK) => gradeMK < 4.0)) {
+          achievedMK.mixedBag = true;
+          detailsMK.mixedBag = subjectMetaMK.displayName;
+        }
+
+        if (subjectNotesMK.filter((gradeMK) => this.isApproxGradeMK(gradeMK, 4.0, 0.01)).length >= 3) {
+          achievedMK.sniper = true;
+          detailsMK.sniper = subjectMetaMK.displayName;
+        }
+
+        const isGermanMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['DE', 'D', 'DEU', 'GER'],
+          tokens: ['deutsch', 'german'],
+          contains: ['deutsch', 'german']
         });
-      }
-      
-      for (const g of allGradesMK) {
-          if (g.note === 6.0) globalStreak6++; else globalStreak6 = 0;
-          if (g.note >= 5.0) globalStreakGood++; else globalStreakGood = 0;
-          
-          if (globalStreak6 >= 3) achievedMK.streak = true;
-          if (globalStreakGood >= 5) achievedMK.winningStreak = true;
+        const isEnglishMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['EN', 'ENG'],
+          tokens: ['englisch', 'english'],
+          contains: ['englisch', 'english']
+        });
+        const isFrenchMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['FR', 'FRA'],
+          tokens: ['franzosisch', 'franzoesisch', 'francais', 'french'],
+          contains: ['franz', 'french']
+        });
+        const isMathMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['MA', 'M', 'MAT', 'MATH'],
+          tokens: ['mathe', 'mathematik', 'math'],
+          contains: ['mathe', 'math']
+        });
+        const isBiologyMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['BI', 'B', 'BIO'],
+          tokens: ['biologie', 'biology', 'bio'],
+          contains: ['bio']
+        });
+        const isChemistryMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['CH', 'C', 'CHE', 'CHEM'],
+          tokens: ['chemie', 'chemistry', 'chem'],
+          contains: ['chem']
+        });
+        const isPhysicsMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['PH', 'PHY'],
+          tokens: ['physik', 'physics', 'phys'],
+          contains: ['phys']
+        });
+        const isInformatikMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['IN', 'INF', 'INFO', 'ICT', 'CS'],
+          tokens: ['informatik', 'info', 'computer', 'programmieren', 'coding'],
+          contains: ['info', 'inform', 'computer']
+        });
+        const isGeoMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['GG', 'GEO', 'GE'],
+          tokens: ['geo', 'geografie', 'geographie'],
+          contains: ['geo', 'geogra']
+        });
+        const isHistoryMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['GS', 'GES', 'HIS', 'HIST'],
+          tokens: ['geschichte', 'history', 'histor'],
+          contains: ['geschicht', 'histor']
+        });
+        const isMusicMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['MU', 'MUS'],
+          tokens: ['musik', 'music'],
+          contains: ['musik', 'music']
+        });
+        const isArtMK = this.subjectMatchesMK(subjectMetaMK, {
+          codes: ['BG', 'BK', 'KU', 'ART'],
+          tokens: ['kunst', 'bildnerisch', 'gestaltung', 'zeichnen', 'art'],
+          contains: ['kunst', 'art', 'bildner']
+        });
+
+        if (isMathMK) {
+          if (subjectAvgMK > 4.0) achievedMK.mathStart = true;
+          if (subjectAvgMK > 5.0) achievedMK.mathPro = true;
+          if (subjectAvgMK > 5.5) achievedMK.mathGenius = true;
+        }
+
+        if (isGermanMK) {
+          if (subjectAvgMK > 5.0) achievedMK.germanPoet = true;
+          if (subjectAvgMK > 5.5) achievedMK.germanGoethe = true;
+        }
+
+        if (isEnglishMK) {
+          if (subjectAvgMK > 5.0) achievedMK.englishSpeaker = true;
+          if (subjectAvgMK > 5.5) achievedMK.englishNative = true;
+        }
+
+        if (isFrenchMK) {
+          if (subjectAvgMK > 4.0) achievedMK.frenchBonjour = true;
+          if (subjectAvgMK > 5.0) achievedMK.frenchBaguette = true;
+          if (subjectAvgMK > 5.5) achievedMK.frenchEiffel = true;
+        }
+
+        if (isInformatikMK && subjectAvgMK > 5.5) {
+          achievedMK.hacker = true;
+        }
+
+        if ((isGeoMK || isHistoryMK) && subjectAvgMK > 4.5) {
+          achievedMK.explorer = true;
+        }
+        if (isGeoMK && subjectAvgMK > 5.0) {
+          achievedMK.geoWorld = true;
+        }
+        if (isHistoryMK && subjectAvgMK > 5.0) {
+          achievedMK.historian = true;
+        }
+        if (isHistoryMK && subjectAvgMK > 5.5) {
+          achievedMK.timeTraveler = true;
+        }
+
+        if (categoryMK === 'naturwissenschaften') {
+          if (subjectAvgMK > 4.5) achievedMK.labRat = true;
+          if (isBiologyMK && subjectAvgMK > 5.0) achievedMK.bioFan = true;
+          if (isChemistryMK && subjectAvgMK > 5.0) achievedMK.chemPro = true;
+          if (isPhysicsMK && subjectAvgMK > 5.0) achievedMK.physEinstein = true;
+        }
+
+        if (categoryMK === 'kunst') {
+          if (subjectAvgMK > 5.0) achievedMK.creative = true;
+          if (subjectAvgMK > 5.5) achievedMK.virtuoso = true;
+          if (isMusicMK && subjectAvgMK > 5.0) achievedMK.musicMozart = true;
+          if (isArtMK && subjectAvgMK > 5.0) achievedMK.artPicasso = true;
+        }
+
+        if (categoryMK === 'sport') {
+          if (subjectAvgMK > 5.0) achievedMK.athlete = true;
+          if (subjectAvgMK > 5.5) achievedMK.olympian = true;
+        }
+
+        if (categoryMK === 'sprache' && subjectAvgMK >= 5.0) {
+          languageSubjectsOverFiveMK += 1;
+        }
+
+        gradeEntriesMK.forEach((entryMK) => {
+          if (!achievedMK.heavyLifter && entryMK.weight >= 2 && entryMK.note >= 5.0) {
+            achievedMK.heavyLifter = true;
+            detailsMK.heavyLifter = subjectMetaMK.displayName;
+          }
+
+          if (entryMK.dateObj) {
+            const monthLabelMK = `${String(entryMK.dateObj.getMonth() + 1).padStart(2, '0')}.${entryMK.dateObj.getFullYear()}`;
+            const monthKeyMK = `${entryMK.dateObj.getFullYear()}-${String(entryMK.dateObj.getMonth() + 1).padStart(2, '0')}`;
+            const monthCountMK = (monthGradeCountMK.get(monthKeyMK) || 0) + 1;
+            monthGradeCountMK.set(monthKeyMK, monthCountMK);
+
+            if (monthCountMK >= 5 && !achievedMK.monthRunner) {
+              achievedMK.monthRunner = true;
+              detailsMK.monthRunner = monthLabelMK;
+            }
+          }
+
+          allGradesMK.push({
+            note: entryMK.note,
+            fach: subjectMetaMK.displayName,
+            date: entryMK.date,
+            dateObj: entryMK.dateObj,
+            weight: entryMK.weight,
+            order: entryMK.order
+          });
+        });
+      });
+
+      if (totalGradesMK === 0) {
+        return { achieved: achievedMK, details: detailsMK };
       }
 
-      const overallAvg = totalWeightMK > 0 ? totalSumMK / totalWeightMK : 0;
+      const orderedAllGradesMK = this.sortGradeEntriesMK(allGradesMK);
+      let globalStreak6MK = 0;
+      let globalStreakGoodMK = 0;
+      let passingStreakMK = 0;
+
+      orderedAllGradesMK.forEach((entryMK) => {
+        const noteMK = entryMK.note;
+        const fachNameMK = entryMK.fach;
+        const isSixMK = this.isApproxGradeMK(noteMK, 6.0);
+
+        if (isSixMK) {
+          count6MK += 1;
+        }
+
+        if (isSixMK && !achievedMK.first6) {
+          achievedMK.first6 = true;
+          detailsMK.first6 = fachNameMK;
+        }
+        if (noteMK >= 5.5 && !isSixMK && !achievedMK.first55) {
+          achievedMK.first55 = true;
+          detailsMK.first55 = fachNameMK;
+        }
+        if (noteMK >= 5.0 && noteMK < 5.5 && !achievedMK.first5) {
+          achievedMK.first5 = true;
+          detailsMK.first5 = fachNameMK;
+        }
+        if (noteMK >= 4.5 && noteMK < 5.0 && !achievedMK.first45) {
+          achievedMK.first45 = true;
+          detailsMK.first45 = fachNameMK;
+        }
+        if (noteMK >= 4.0 && noteMK < 4.5 && !achievedMK.first4) {
+          achievedMK.first4 = true;
+          detailsMK.first4 = fachNameMK;
+        }
+        if (noteMK < 4.0 && !achievedMK.firstFail) {
+          achievedMK.firstFail = true;
+          detailsMK.firstFail = fachNameMK;
+        }
+        if (noteMK <= 3.0 && !achievedMK.first3) {
+          achievedMK.first3 = true;
+          detailsMK.first3 = fachNameMK;
+        }
+        if (noteMK <= 2.0 && !achievedMK.first2) {
+          achievedMK.first2 = true;
+          detailsMK.first2 = fachNameMK;
+        }
+        if (this.isApproxGradeMK(noteMK, 1.0) && !achievedMK.bottomBarrel) {
+          achievedMK.bottomBarrel = true;
+          detailsMK.bottomBarrel = fachNameMK;
+        }
+        if (noteMK > 6.0 && !achievedMK.overSix) {
+          achievedMK.overSix = true;
+          detailsMK.overSix = fachNameMK;
+        }
+
+        globalStreak6MK = isSixMK ? globalStreak6MK + 1 : 0;
+        globalStreakGoodMK = noteMK >= 5.0 ? globalStreakGoodMK + 1 : 0;
+        passingStreakMK = noteMK >= 4.0 ? passingStreakMK + 1 : 0;
+
+        if (globalStreak6MK >= 3) {
+          achievedMK.streak = true;
+        }
+        if (globalStreakGoodMK >= 5) {
+          achievedMK.winningStreak = true;
+        }
+        if (passingStreakMK >= 10) {
+          achievedMK.safeRun = true;
+        }
+
+        if (entryMK.dateObj) {
+          const dayMK = entryMK.dateObj.getDay();
+          const monthMK = entryMK.dateObj.getMonth();
+          const dayOfMonthMK = entryMK.dateObj.getDate();
+
+          if (dayMK === 1 && isSixMK) {
+            achievedMK.mondayMotivation = true;
+            detailsMK.mondayMotivation = fachNameMK;
+          }
+          if (dayMK === 5 && isSixMK) {
+            achievedMK.fridayFeeling = true;
+            detailsMK.fridayFeeling = fachNameMK;
+          }
+          if (dayMK === 0 || dayMK === 6) {
+            achievedMK.weekendWarrior = true;
+            detailsMK.weekendWarrior = fachNameMK;
+          }
+
+          if (dayMK === 5 && dayOfMonthMK === 13) {
+            if (noteMK >= 5.0) {
+              achievedMK.luckyDay = true;
+              detailsMK.luckyDay = fachNameMK;
+            }
+            if (noteMK < 4.0) {
+              achievedMK.badLuck = true;
+              detailsMK.badLuck = fachNameMK;
+            }
+          }
+
+          if (monthMK >= 5 && monthMK <= 7 && noteMK >= 5.0) {
+            achievedMK.summerVibes = true;
+            detailsMK.summerVibes = fachNameMK;
+          }
+          if ((monthMK === 11 || monthMK <= 1) && noteMK >= 5.0) {
+            achievedMK.winterWonder = true;
+            detailsMK.winterWonder = fachNameMK;
+          }
+        }
+      });
+
+      const overallAvgMK = totalWeightMK > 0 ? totalSumMK / totalWeightMK : 0;
 
       if (totalGradesMK >= 1) achievedMK.firstTest = true;
       if (totalGradesMK >= 5) achievedMK.highFive = true;
@@ -603,53 +1156,74 @@
       if (totalGradesMK >= 30) achievedMK.thirtyGrades = true;
       if (totalGradesMK >= 50) achievedMK.halfCentury = true;
       if (totalGradesMK >= 100) achievedMK.centurion = true;
-      if (subjectCountMK >= 5) achievedMK.survival = true;
-      if (subjectCountMK >= 10) achievedMK.subjectHoarder = true;
+      if (validSubjectCountMK >= 5) achievedMK.survival = true;
+      if (validSubjectCountMK >= 10) achievedMK.subjectHoarder = true;
 
-      if (count6 >= 2) achievedMK.doubleSix = true;
-      if (count6 >= 3) achievedMK.hatTrick = true;
-      if (count6 >= 5) achievedMK.handfulSixes = true;
-      if (count6 >= 10) achievedMK.perfectTen = true;
+      if (count6MK >= 2) achievedMK.doubleSix = true;
+      if (count6MK >= 3) achievedMK.hatTrick = true;
+      if (count6MK >= 5) achievedMK.handfulSixes = true;
+      if (count6MK >= 10) achievedMK.perfectTen = true;
 
-      if (overallAvg >= 4.0) achievedMK.survivorAvg = true;
-      if (overallAvg >= 4.5) achievedMK.solidAvg = true;
-      if (overallAvg >= 5.0) achievedMK.goodAvg = true;
-      if (overallAvg >= 5.5) achievedMK.highPerformer = true;
-      if (overallAvg >= 5.75) achievedMK.geniusAvg = true;
-      
-      if (Math.abs(overallAvg - 4.0) < 0.001) achievedMK.onTheEdge = true;
-      if (overallAvg >= 3.9 && overallAvg < 4.0) achievedMK.closeCall = true;
-      if (Math.abs(overallAvg - 4.2) < 0.01) achievedMK.answer42 = true;
-      if (overallAvg >= 4.0 && overallAvg <= 4.1) achievedMK.scrapedBy = true;
-      if (overallAvg >= 4.0 && overallAvg <= 5.0) achievedMK.averageJoe = true;
-      
-      if ([4.0, 4.5, 5.0, 5.5].some(v => Math.abs(overallAvg - v) < 0.001)) achievedMK.balanced = true;
-      
-      if (allPassedMK && totalGradesMK >= 5) achievedMK.allPassed = true;
+      if (overallAvgMK >= 4.0) achievedMK.survivorAvg = true;
+      if (overallAvgMK >= 4.5) achievedMK.solidAvg = true;
+      if (overallAvgMK >= 5.0) achievedMK.goodAvg = true;
+      if (overallAvgMK >= 5.5) achievedMK.highPerformer = true;
+      if (overallAvgMK >= 5.75) achievedMK.geniusAvg = true;
 
-      const scienceAvg = catStats.naturwissenschaften.weight > 0 ? catStats.naturwissenschaften.sum / catStats.naturwissenschaften.weight : 0;
-      if (catStats.naturwissenschaften.count >= 2 && scienceAvg >= 5.0) achievedMK.scientist = true;
-      if (catStats.naturwissenschaften.count >= 2 && scienceAvg >= 5.5) achievedMK.nobelPrize = true;
+      if (Math.abs(overallAvgMK - 4.0) < 0.001) achievedMK.onTheEdge = true;
+      if (overallAvgMK >= 3.9 && overallAvgMK < 4.0) achievedMK.closeCall = true;
+      if (Math.abs(overallAvgMK - 4.2) < 0.01) achievedMK.answer42 = true;
+      if (overallAvgMK >= 4.0 && overallAvgMK <= 4.1) achievedMK.scrapedBy = true;
+      if (overallAvgMK >= 4.0 && overallAvgMK <= 5.0) achievedMK.averageJoe = true;
 
-      const polyglotCount = (catStats.sprache.weight > 0 && (catStats.sprache.sum / catStats.sprache.weight) >= 5.0) ? 1 : 0; 
-      let langHighCount = 0;
-      for (const fachMK of notenDatenMK) {
-          const k = this.getFachKategorie(fachMK.fachLangName || fachMK.fach || '');
-          if (k === 'sprache') {
-             const w = fachMK.gewichtung || fachMK.noten.map(()=>1);
-             const s = fachMK.noten.reduce((a,b,i)=>a+b*w[i],0);
-             const sw = w.reduce((a,b)=>a+b,0);
-             if (sw > 0 && s/sw >= 5.0) langHighCount++;
-          }
-      }
-      if (langHighCount >= 2) achievedMK.polyglot = true;
-
-      if (catStats.naturwissenschaften.passed && catStats.sprache.passed && catStats.gesellschaft.passed && 
-          catStats.naturwissenschaften.count > 0 && catStats.sprache.count > 0 && catStats.gesellschaft.count > 0) {
-          achievedMK.allRounder = true;
+      const nearestHalfStepMK = Math.round(overallAvgMK * 2) / 2;
+      if (Math.abs(overallAvgMK - nearestHalfStepMK) < 0.001) {
+        achievedMK.balanced = true;
       }
 
-      if (count6 >= 1 && countFail >= 1) achievedMK.specialist = true;
+      if (allPassedMK && totalGradesMK >= 5) {
+        achievedMK.allPassed = true;
+      }
+
+      const scienceAvgMK = catStatsMK.naturwissenschaften.weight > 0
+        ? catStatsMK.naturwissenschaften.sum / catStatsMK.naturwissenschaften.weight
+        : 0;
+      if (catStatsMK.naturwissenschaften.count >= 2 && scienceAvgMK >= 5.0) achievedMK.scientist = true;
+      if (catStatsMK.naturwissenschaften.count >= 2 && scienceAvgMK >= 5.5) achievedMK.nobelPrize = true;
+
+      if (languageSubjectsOverFiveMK >= 2) {
+        achievedMK.polyglot = true;
+      }
+
+      if (subjectsOverFiveMK >= 4) {
+        achievedMK.subjectElite = true;
+      }
+
+      const trackedCategoriesMK = ['naturwissenschaften', 'sprache', 'gesellschaft', 'kunst', 'sport', 'wahlfaecher'];
+      const activeTrackedCategoriesMK = trackedCategoriesMK.filter((categoryMK) => catStatsMK[categoryMK] && catStatsMK[categoryMK].count > 0);
+
+      const strongCategoryCountMK = activeTrackedCategoriesMK.filter((categoryMK) => {
+        const categoryStatsMK = catStatsMK[categoryMK];
+        if (!categoryStatsMK || categoryStatsMK.weight <= 0) {
+          return false;
+        }
+        return (categoryStatsMK.sum / categoryStatsMK.weight) >= 5.0;
+      }).length;
+
+      if (strongCategoryCountMK >= 3) {
+        achievedMK.categoryChampion = true;
+      }
+
+      if (
+        activeTrackedCategoriesMK.length >= 3 &&
+        activeTrackedCategoriesMK.every((categoryMK) => catStatsMK[categoryMK].passed)
+      ) {
+        achievedMK.allRounder = true;
+      }
+
+      if (count6MK >= 1 && hasBelowThreeFiveMK) {
+        achievedMK.specialist = true;
+      }
 
       return { achieved: achievedMK, details: detailsMK };
     }
@@ -670,36 +1244,128 @@
       
       const toastMK = document.createElement("div");
       toastMK.id = "achievement-toast";
+      toastMK.className = "panum-achievement-toast";
+      toastMK.setAttribute("role", "status");
       toastMK.style.cssText = `
-        position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
-        background:#fffbe7;color:#ff9800;border:2px solid #ff9800;
-        border-radius:12px;padding:18px 32px;font-size:18px;font-weight:bold;
-        box-shadow:0 4px 24px rgba(0,0,0,0.18);z-index:999999;
-        animation: toast-in 0.4s ease-out;max-width:80%;text-align:center;
+        position:fixed;top:64px;left:50%;right:auto;
+        transform:translate(-50%, -16px) scale(0.95);
+        background:linear-gradient(135deg, #fff7dc, #ffefb6);
+        color:#7d4300;border:1px solid #f3c24f;border-left:4px solid #ff9800;
+        border-radius:16px;padding:13px 16px;font-size:15px;font-weight:700;
+        box-shadow:0 14px 34px rgba(0,0,0,0.24), 0 0 0 1px rgba(255, 152, 0, 0.2), 0 0 24px rgba(255, 193, 7, 0.35);z-index:999999;
+        animation: panum-achievement-toast-in 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards, panum-achievement-toast-glow 1.8s ease-in-out infinite;
+        width:min(92vw, 460px);text-align:left;
         font-family:system-ui,-apple-system,sans-serif;
+        display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;
+        line-height:1.35;
+        letter-spacing:0.01em;
+        overflow: visible;
+        pointer-events: none;
+        backdrop-filter: blur(6px);
       `;
-      toastMK.innerHTML = `${messageMK}`;
+      toastMK.innerHTML = `<span class="panum-achievement-toast-icon" aria-hidden="true">🏆</span><span class="panum-achievement-toast-text">${messageMK}</span>`;
       
-      if (!document.getElementById("toast-style")) {
-        const styleMK = document.createElement("style");
+      let styleMK = document.getElementById("toast-style");
+      if (!styleMK) {
+        styleMK = document.createElement("style");
         styleMK.id = "toast-style";
-        styleMK.innerHTML = `
-          @keyframes toast-in { 
-            0% { opacity:0; transform:translateX(-50%) translateY(30px) scale(0.9);} 
-            100% { opacity:1; transform:translateX(-50%) translateY(0) scale(1);} 
-          }
-        `;
         document.head.appendChild(styleMK);
       }
+      styleMK.innerHTML = `
+        @keyframes panum-achievement-toast-in { 
+          0% { opacity:0; transform:translate(-50%, -18px) scale(0.95);} 
+          65% { opacity:1; transform:translate(-50%, 2px) scale(1.01);} 
+          100% { opacity:1; transform:translate(-50%, 0) scale(1);} 
+        }
+
+        @keyframes panum-achievement-toast-glow {
+          0%, 100% { box-shadow: 0 14px 34px rgba(0,0,0,0.24), 0 0 0 1px rgba(255, 152, 0, 0.2), 0 0 18px rgba(255, 193, 7, 0.32); }
+          50% { box-shadow: 0 16px 36px rgba(0,0,0,0.25), 0 0 0 1px rgba(255, 152, 0, 0.28), 0 0 34px rgba(255, 193, 7, 0.5); }
+        }
+
+        #achievement-toast.panum-achievement-toast,
+        #achievement-toast.panum-achievement-toast * {
+          color: inherit !important;
+        }
+
+        #achievement-toast.panum-achievement-toast::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(120deg, rgba(255,255,255,0.24), rgba(255,255,255,0) 55%);
+          pointer-events: none;
+        }
+
+        #achievement-toast.panum-achievement-toast::after {
+          content: "NEU";
+          position: absolute;
+          top: 10px;
+          right: 12px;
+          background: #ff9800;
+          color: #ffffff;
+          border-radius: 999px;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          padding: 4px 8px;
+          box-shadow: 0 3px 9px rgba(0,0,0,0.2);
+        }
+
+        #achievement-toast .panum-achievement-toast-icon {
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          line-height: 1;
+          color: #6e3a00 !important;
+          background: linear-gradient(135deg, #ffd66a, #ffb300);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 3px 8px rgba(255,152,0,0.35);
+          position: relative;
+          z-index: 1;
+          filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+        }
+
+        #achievement-toast .panum-achievement-toast-text {
+          font-size: 15px;
+          font-weight: 750;
+          letter-spacing: 0.01em;
+          word-break: break-word;
+          position: relative;
+          z-index: 1;
+        }
+
+        html.panum-dark-theme #achievement-toast.panum-achievement-toast {
+          background: linear-gradient(135deg, #35290f, #241c0b) !important;
+          color: #ffe2ab !important;
+          border-color: #b8872c !important;
+          border-left-color: #f0b745 !important;
+          box-shadow: 0 16px 36px rgba(0,0,0,0.55), 0 0 0 1px rgba(255, 196, 98, 0.22), 0 0 28px rgba(255, 179, 0, 0.35) !important;
+        }
+
+        html.panum-dark-theme #achievement-toast.panum-achievement-toast::before {
+          background: linear-gradient(120deg, rgba(255,214,122,0.12), rgba(255,214,122,0) 60%);
+        }
+
+        html.panum-dark-theme #achievement-toast .panum-achievement-toast-icon {
+          color: #fff2d0 !important;
+          background: linear-gradient(135deg, #9a6f24, #7f5c1e);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 3px 8px rgba(0,0,0,0.45);
+        }
+      `;
       
       document.body.appendChild(toastMK);
       setTimeout(() => {
-        toastMK.style.transition = "opacity 0.5s";
+        toastMK.style.transition = "opacity 0.35s ease, transform 0.35s ease";
         toastMK.style.opacity = "0";
+        toastMK.style.transform = "translate(-50%, -14px) scale(0.96)";
         setTimeout(() => {
           if (toastMK.parentNode) toastMK.remove();
         }, 500);
-      }, 3000);
+      }, 3200);
     }
 
     renderAchievements(notenDatenMK) {
@@ -1197,6 +1863,23 @@
         });
       }
     },
+    testToast: (message = '🏆 Test-Toast: Funktioniert!') => {
+      try {
+        localStorage.setItem('buttonEnabled_achievements', 'true');
+      } catch (e) {
+        console.warn('Could not set achievement toggle in localStorage:', e);
+      }
+
+      if (window.buttonInstancesMK && window.buttonInstancesMK.gamification) {
+        const instance = window.buttonInstancesMK.gamification;
+        instance.showAchievementToast(message);
+        console.log('✅ Test toast triggered');
+        return true;
+      }
+
+      console.warn('GamificationButton instance not found');
+      return false;
+    },
     forceReset: () => {
       console.log('🔄 Forcing achievement reset...');
       localStorage.removeItem('achievementsShown');
@@ -1219,5 +1902,6 @@
   console.log('🎯 Achievement debug functions available via window.achievementDebug');
   console.log('🎯 Use window.achievementDebug.clearAll() to wipe ALL achievement data');
   console.log('🎯 Use window.achievementDebug.resetProgress() to reset progress only');
+  console.log('🎯 Use window.achievementDebug.testToast() to show a test toast');
 
 })();
