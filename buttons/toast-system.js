@@ -13,7 +13,7 @@
         "Wusstest du: Du kannst einzelne Buttons im <span class='highlight-popup'>Erweiterungs-Popup</span> an- und ausschalten?",
         "Wusstest du: Deine Daten werden sicher lokal in deinem Browser gespeichert?",
         "Wusstest du: Du kannst das Layout anpassen, indem du Buttons im Popup deaktivierst?",
-        "Wusstest du: Wenn du fünf mal auf das 📋-emoji im \"Pluspunkte\"-Button klickst, schaltest du ein neuen hidden Button frei!",
+        "Wusstest du: Im Pluspunkte-Panel kannst du einzelne Fächer per Schalter ein- und ausblenden?",
         "Wusstest du: Der Rechner zeigt dir sofort, wie sich eine neue Note auf deinen Schnitt auswirkt?",
         "Wusstest du: Du kannst Zielnoten festlegen und sehen, wie realistisch sie sind?",
         "Wusstest du: Diese Erweiterung wird ständig weiterentwickelt – Feedback ist willkommen!",

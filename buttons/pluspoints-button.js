@@ -580,7 +580,7 @@
             <table style="width:100%;border-collapse:collapse;font-size:14px;">
               <thead>
                 <tr style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
-                  <th id="pluspoints-clipboard-header" style="text-align:center;padding:12px 8px;width:40px;font-weight:600;color:#495057;cursor:pointer;user-select:none;">📋</th>
+                  <th style="text-align:center;padding:12px 8px;width:40px;font-weight:600;color:#495057;user-select:none;">📋</th>
                   <th style="text-align:left;padding:12px 8px;font-weight:600;color:#495057;">Fach</th>
                   <th style="text-align:right;padding:12px 8px;font-weight:600;color:#495057;">Schnitt</th>
                   <th style="text-align:right;padding:12px 8px;font-weight:600;color:#495057;">Punkte</th>
@@ -675,61 +675,6 @@
         `;
         
         document.getElementById('pluspoints-table-wrap').innerHTML = htmlMK;
-        
-        // Easter Egg Logic
-        const clipboardHeader = document.getElementById('pluspoints-clipboard-header');
-        if (clipboardHeader) {
-          let clickCount = 0;
-          clipboardHeader.onclick = () => {
-            clickCount++;
-            if (clickCount === 5) {
-              const videoOverlay = document.createElement('div');
-              videoOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: black;
-                z-index: 2147483647;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-              `;
-              
-              const video = document.createElement('video');
-              
-              let videoUrl;
-              if (typeof browser !== 'undefined' && browser.runtime && browser.runtime.getURL) {
-                videoUrl = browser.runtime.getURL('buttons/rickroll.mp4');
-              } else if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
-                videoUrl = chrome.runtime.getURL('buttons/rickroll.mp4');
-              } else {
-                videoUrl = 'buttons/rickroll.mp4';
-              }
-                
-              video.src = videoUrl;
-              video.style.cssText = 'width: 100%; height: 100%; object-fit: contain;';
-              video.autoplay = true;
-              video.controls = false;
-              
-              videoOverlay.appendChild(video);
-              document.body.appendChild(videoOverlay);
-              
-              const closeVideo = () => {
-                videoOverlay.remove();
-              };
-              
-              videoOverlay.onclick = closeVideo;
-              video.onended = closeVideo;
-              
-              video.play().catch(e => console.error('Autoplay failed:', e));
-              
-              clickCount = 0;
-            }
-          };
-        }
         
         // Re-attach event listeners
         allItems.forEach(item => {

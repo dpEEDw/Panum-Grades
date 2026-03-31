@@ -32,8 +32,6 @@
       }
 
       const checkAndSlide = () => {
-        const pluspointsPos = 140;   // Middle of stack
-        const gamePos = 200;         // Bottom of stack
         const myOriginalPos = parseInt(myButton.dataset.originalBottom);
 
         const targetPosition = myOriginalPos;
@@ -223,6 +221,157 @@
       this.renderImprovementPanel();
     }
 
+    parseNumericValue(value) {
+      if (typeof value === 'number') {
+        return Number.isFinite(value) ? value : NaN;
+      }
+
+      if (typeof value === 'string') {
+        const parsedValue = parseFloat(value.replace(',', '.').replace('*', '').trim());
+        return Number.isFinite(parsedValue) ? parsedValue : NaN;
+      }
+
+      return NaN;
+    }
+
+    getSubjectDisplayName(fach) {
+      const fallbackName = 'Unbekanntes Fach';
+      const fullName = String((fach && fach.fach) || (fach && fach.fachLangName) || '').trim();
+      if (!fullName) {
+        return fallbackName;
+      }
+
+      const splitName = fullName.split(' - ');
+      if (splitName.length > 1 && splitName[1].trim()) {
+        return splitName[1].trim();
+      }
+
+      return fullName;
+    }
+
+    buildWeightedEntries(fach) {
+      if (!fach || !Array.isArray(fach.noten) || !fach.noten.length) {
+        return [];
+      }
+
+      const rawWeights = Array.isArray(fach.gewichtungen)
+        ? fach.gewichtungen
+        : (Array.isArray(fach.gewichtung) ? fach.gewichtung : []);
+
+      const entries = [];
+
+      fach.noten.forEach((rawGrade, index) => {
+        const grade = this.parseNumericValue(rawGrade);
+        if (!Number.isFinite(grade)) {
+          return;
+        }
+
+        let weight = this.parseNumericValue(rawWeights[index]);
+        if (!Number.isFinite(weight) || weight <= 0) {
+          weight = 1;
+        }
+
+        entries.push({ grade, weight });
+      });
+
+      return entries;
+    }
+
+    getSuggestedNextWeight(entries) {
+      if (!Array.isArray(entries) || entries.length === 0) {
+        return 1;
+      }
+
+      const weightCounts = new Map();
+      entries.forEach((entry) => {
+        const normalizedWeight = Number(entry.weight.toFixed(2));
+        weightCounts.set(normalizedWeight, (weightCounts.get(normalizedWeight) || 0) + 1);
+      });
+
+      let bestWeight = 1;
+      let bestCount = 0;
+
+      weightCounts.forEach((count, weight) => {
+        if (count > bestCount || (count === bestCount && weight > bestWeight)) {
+          bestCount = count;
+          bestWeight = weight;
+        }
+      });
+
+      return bestWeight;
+    }
+
+    formatWeight(weight) {
+      if (!Number.isFinite(weight)) {
+        return '1';
+      }
+      if (Math.abs(weight - Math.round(weight)) < 0.001) {
+        return String(Math.round(weight));
+      }
+      return weight.toFixed(2);
+    }
+
+    getActionableImprovements(items) {
+      if (!Array.isArray(items) || !items.length) {
+        return [];
+      }
+
+      const maxRequiredGradeMK = 5.25;
+      const maxDistanceMK = 0.15;
+      const maxItemsMK = 3;
+
+      const filteredItemsMK = items
+        .filter((item) => item.guaranteed || item.requiredGrade <= maxRequiredGradeMK || item.dist <= maxDistanceMK)
+        .map((item) => {
+          const effortPenaltyMK = item.guaranteed ? -1 : item.requiredGrade;
+          const closenessPenaltyMK = Math.max(0, item.dist) * 2;
+          const weightPenaltyMK = Math.max(0, item.nextWeight - 1) * 0.15;
+          const priorityScoreMK = effortPenaltyMK + closenessPenaltyMK + weightPenaltyMK;
+
+          return {
+            ...item,
+            priorityScore: priorityScoreMK
+          };
+        })
+        .sort((a, b) => {
+          if (a.priorityScore !== b.priorityScore) return a.priorityScore - b.priorityScore;
+          if (a.requiredGrade !== b.requiredGrade) return a.requiredGrade - b.requiredGrade;
+          return b.currentAvg - a.currentAvg;
+        });
+
+      return filteredItemsMK.slice(0, maxItemsMK);
+    }
+
+    getCriticalRisks(items) {
+      if (!Array.isArray(items) || !items.length) {
+        return [];
+      }
+
+      const minSafeGradeThresholdMK = 4.75;
+      const veryCloseDistanceMK = 0.08;
+      const maxItemsMK = 3;
+
+      const filteredItemsMK = items
+        .filter((item) => item.unavoidable || item.minSafeGrade >= minSafeGradeThresholdMK || item.dist <= veryCloseDistanceMK)
+        .map((item) => {
+          const unavoidableBonusMK = item.unavoidable ? 10 : 0;
+          const riskPressureMK = Math.min(item.minSafeGrade, 6.5);
+          const closenessBonusMK = Math.max(0, 0.2 - item.dist);
+          const priorityScoreMK = unavoidableBonusMK + riskPressureMK + closenessBonusMK;
+          return {
+            ...item,
+            priorityScore: priorityScoreMK
+          };
+        })
+        .sort((a, b) => {
+          if (a.priorityScore !== b.priorityScore) return b.priorityScore - a.priorityScore;
+          if (a.minSafeGrade !== b.minSafeGrade) return b.minSafeGrade - a.minSafeGrade;
+          return a.dist - b.dist;
+        });
+
+      return filteredItemsMK.slice(0, maxItemsMK);
+    }
+
     renderImprovementPanel() {
       this.loadNotenDaten((notenDaten) => {
         const out = document.getElementById('improvement-content');
@@ -235,103 +384,132 @@
         let riskItems = [];
         
         const round05 = (num) => Math.round(num * 2) / 2;
+        const epsilon = 0.000001;
         
         for (const fach of notenDaten) {
-          if (!fach.noten || !fach.noten.length) continue;
-          const grades = fach.noten;
-          const weights = fach.gewichtung || grades.map(() => 1);
-          
-          const weightedSum = grades.reduce((sum, grade, idx) => sum + (grade * weights[idx]), 0);
-          const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+          const entries = this.buildWeightedEntries(fach);
+          if (!entries.length) {
+            continue;
+          }
+
+          const subjectName = this.getSubjectDisplayName(fach);
+          const weightedSum = entries.reduce((sum, entry) => sum + (entry.grade * entry.weight), 0);
+          const totalWeight = entries.reduce((sum, entry) => sum + entry.weight, 0);
+          if (totalWeight <= 0) {
+            continue;
+          }
+
           const currentAvg = weightedSum / totalWeight;
           const currentRounded = round05(currentAvg);
+          const nextWeight = this.getSuggestedNextWeight(entries);
           
           const nextHigherRounded = currentRounded + 0.5;
-          if (nextHigherRounded <= 6.0) {
-            const targetThreshold = nextHigherRounded - 0.25;
+          if (nextHigherRounded <= 6.0 + epsilon) {
+            const targetThreshold = nextHigherRounded - 0.25 + epsilon;
             const distToTarget = targetThreshold - currentAvg;
             
-            if (distToTarget > 0 && distToTarget <= 0.25) {
-              const newWeight = 1;
-              const newTotalWeight = totalWeight + newWeight;
-              const requiredGrade = targetThreshold * newTotalWeight - weightedSum;
+            if (distToTarget > 0 && distToTarget <= 0.25 + epsilon) {
+              const requiredGrade = (targetThreshold * (totalWeight + nextWeight) - weightedSum) / nextWeight;
               
-              if (requiredGrade <= 6.0) {
+              if (requiredGrade <= 6.0 + epsilon) {
                 improvementItems.push({
-                  subject: fach.fach,
+                  subject: subjectName,
                   currentAvg: currentAvg,
                   currentRounded: currentRounded,
                   targetRounded: nextHigherRounded,
-                  requiredGrade: requiredGrade,
-                  dist: distToTarget
+                  requiredGrade: Math.max(1, requiredGrade),
+                  dist: distToTarget,
+                  nextWeight: nextWeight,
+                  guaranteed: requiredGrade < 1
                 });
               }
             }
           }
           
-          const dropThreshold = currentRounded - 0.25;
-          const distToDrop = currentAvg - dropThreshold;
+          if (currentRounded > 1.0 + epsilon) {
+            const dropThreshold = currentRounded - 0.25;
+            const distToDrop = currentAvg - dropThreshold;
 
-          if (distToDrop >= 0 && distToDrop <= 0.25) {
-            const newWeight = 1;
-            const newTotalWeight = totalWeight + newWeight;
-            const minSafeGrade = dropThreshold * newTotalWeight - weightedSum;
+            if (distToDrop >= -epsilon && distToDrop <= 0.25 + epsilon) {
+              const minSafeGrade = (dropThreshold * (totalWeight + nextWeight) - weightedSum) / nextWeight;
 
-            if (minSafeGrade > 1.0) {
-              riskItems.push({
-                subject: fach.fach,
-                currentAvg: currentAvg,
-                currentRounded: currentRounded,
-                dropRounded: currentRounded - 0.5,
-                minSafeGrade: minSafeGrade,
-                dist: distToDrop
-              });
+              if (minSafeGrade > 1.0 + epsilon) {
+                riskItems.push({
+                  subject: subjectName,
+                  currentAvg: currentAvg,
+                  currentRounded: currentRounded,
+                  dropRounded: currentRounded - 0.5,
+                  minSafeGrade: minSafeGrade,
+                  dist: distToDrop,
+                  nextWeight: nextWeight,
+                  unavoidable: minSafeGrade > 6.0 + epsilon
+                });
+              }
             }
           }
         }
         
         improvementItems.sort((a, b) => a.dist - b.dist);
         riskItems.sort((a, b) => a.dist - b.dist);
+
+        const topImprovements = this.getActionableImprovements(improvementItems);
+        const topRisks = this.getCriticalRisks(riskItems);
+        const hiddenImprovementCount = Math.max(0, improvementItems.length - topImprovements.length);
+        const hiddenRiskCount = Math.max(0, riskItems.length - topRisks.length);
         
         let html = '';
         
         html += '<div style="margin-bottom: 20px;">';
-        html += '<h3 style="color:#4caf50; margin: 0 0 10px 0; font-size: 16px;">🟢 Greifbare Verbesserungen</h3>';
-        if (!improvementItems.length) {
-          html += '<div style="color:#888; font-style: italic; font-size: 13px;">Keine nahen Aufstiegschancen.</div>';
+        html += '<h3 style="color:#4caf50; margin: 0 0 6px 0; font-size: 16px;">🟢 Schnellste Hebel</h3>';
+        html += '<div style="color:#5f6b7a; font-size: 12px; margin-bottom: 10px;">Nur Chancen mit niedrigem Aufwand bis zur nächsten Rundungsetappe.</div>';
+        if (!topImprovements.length) {
+          html += '<div style="color:#888; font-style: italic; font-size: 13px;">Aktuell keine echte Quick-Win-Chance gefunden.</div>';
         } else {
-          html += improvementItems.map(item => `
+          html += topImprovements.map((item, idx) => `
             <div style="margin: 8px 0; padding: 10px; background-color: #e8f5e8; border-radius: 8px; border-left: 4px solid #4caf50; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                 <b style="font-size:15px;">${item.subject}</b>
-                <span style="background:#c8e6c9; color:#2e7d32; padding:2px 6px; border-radius:4px; font-size:12px; font-weight:bold;">${item.currentRounded.toFixed(1)} → ${item.targetRounded.toFixed(1)}</span>
+                <span style="background:#c8e6c9; color:#2e7d32; padding:2px 6px; border-radius:4px; font-size:12px; font-weight:bold;">${idx === 0 ? 'Top Chance' : 'Chance'} • ${item.currentRounded.toFixed(1)} → ${item.targetRounded.toFixed(1)}</span>
               </div>
               <div style="font-size:13px; color:#444;">
                 Aktueller Schnitt: <b>${item.currentAvg.toFixed(3)}</b><br>
-                Benötigte Note (1x): <b style="color:#2e7d32;">${item.requiredGrade.toFixed(2)}</b>
+                ${item.guaranteed
+                  ? `Nächster Test (Gewichtung ${this.formatWeight(item.nextWeight)}): <b style="color:#2e7d32;">bereits mit 1.0 erreichbar</b>`
+                  : `Benötigte Note (1x, Gewichtung ${this.formatWeight(item.nextWeight)}): <b style="color:#2e7d32;">${item.requiredGrade.toFixed(2)}</b>`}
               </div>
             </div>
           `).join('');
+
+          if (hiddenImprovementCount > 0) {
+            html += `<div style="margin-top:6px;color:#6c757d;font-size:12px;">${hiddenImprovementCount} weitere Chance(n) ausgeblendet, um den Fokus auf die besten Hebel zu halten.</div>`;
+          }
         }
         html += '</div>';
         
         html += '<div style="margin-bottom: 20px;">';
-        html += '<h3 style="color:#f44336; margin: 0 0 10px 0; font-size: 16px;">🔴 Kritische Risiken</h3>';
-        if (!riskItems.length) {
-          html += '<div style="color:#888; font-style: italic; font-size: 13px;">Keine akuten Abstiegsrisiken.</div>';
+        html += '<h3 style="color:#f44336; margin: 0 0 6px 0; font-size: 16px;">🔴 Kritische Risiken</h3>';
+        html += '<div style="color:#5f6b7a; font-size: 12px; margin-bottom: 10px;">Nur Fächer mit hoher Abstiegsgefahr werden angezeigt.</div>';
+        if (!topRisks.length) {
+          html += '<div style="color:#888; font-style: italic; font-size: 13px;">Keine kritischen Risiken erkannt.</div>';
         } else {
-          html += riskItems.map(item => `
+          html += topRisks.map((item, idx) => `
             <div style="margin: 8px 0; padding: 10px; background-color: #ffebee; border-radius: 8px; border-left: 4px solid #f44336; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                 <b style="font-size:15px;">${item.subject}</b>
-                <span style="background:#ffcdd2; color:#c62828; padding:2px 6px; border-radius:4px; font-size:12px; font-weight:bold;">${item.currentRounded.toFixed(1)} ↘ ${item.dropRounded.toFixed(1)}</span>
+                <span style="background:#ffcdd2; color:#c62828; padding:2px 6px; border-radius:4px; font-size:12px; font-weight:bold;">${idx === 0 ? 'Höchstes Risiko' : 'Risiko'} • ${item.currentRounded.toFixed(1)} ↘ ${item.dropRounded.toFixed(1)}</span>
               </div>
               <div style="font-size:13px; color:#444;">
                 Aktueller Schnitt: <b>${item.currentAvg.toFixed(3)}</b><br>
-                Abstieg bei Note (1x) < <b style="color:#c62828;">${item.minSafeGrade.toFixed(2)}</b>
+                ${item.unavoidable
+                  ? `Abstieg kaum vermeidbar: selbst <b style="color:#c62828;">6.0</b> reicht bei Gewichtung ${this.formatWeight(item.nextWeight)} nicht.`
+                  : `Abstieg bei Note (1x, Gewichtung ${this.formatWeight(item.nextWeight)}) < <b style="color:#c62828;">${item.minSafeGrade.toFixed(2)}</b>`}
               </div>
             </div>
           `).join('');
+
+          if (hiddenRiskCount > 0) {
+            html += `<div style="margin-top:6px;color:#6c757d;font-size:12px;">${hiddenRiskCount} weitere Risiko-Hinweise ausgeblendet.</div>`;
+          }
         }
         html += '</div>';
         

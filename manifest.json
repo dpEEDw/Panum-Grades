@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Panum Grades",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Berechne Durchschnitt und Zielnoten direkt auf der Schulwebseite Schul-netz.com.",
   "permissions": ["storage"],
   "browser_specific_settings": {
@@ -55,8 +55,7 @@
         "buttons/custom-button.js",
         "buttons/improvement-button.js",
         "buttons/gamification-button.js",
-        "buttons/incognito-system.js",
-        "buttons/rickroll.mp4"
+        "buttons/incognito-system.js"
       ],
       "matches": [
         "https://www.schul-netz.com/*",
