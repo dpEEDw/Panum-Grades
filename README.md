@@ -1,24 +1,34 @@
-# Panum Grades
+# 🎓 Panum Grades
 
-Browser extension for Schul-Netz grade workflows.
+> Eine Browser-Erweiterung zur Verbesserung und Optimierung der Noten-Workflows in Schulnetz.
+---
+## 🛠️ Projektbetreuer & Mitwirkende
 
-## Notes
+* **Hauptentwickler:** panumic (Code aktualisiert und gepflegt mit Unterstützung von KI).
+* **Mitwirkende:** Besonderer Dank geht an TyZWt6v für die Mithilfe bei der Pflege des Projekts, einschließlich wichtiger Fehlerbehebungen für den Dark Mode.
 
-- This project was updated by panumic with help from AI.
-- panumic maintains this project.
-- TyZWt6v helps me with maintaining this projects such as dark mode fixes
-- You can open an issue any time if you find a bug, have feedback, or want a feature.
+## 💡 Feedback & Mitwirkung
 
-## License
+Dein Feedback ist uns sehr wichtig! 
+Wenn du einen Fehler (Bug) findest, allgemeines Feedback hast oder eine neue Funktion vorschlagen möchtest, kannst du jederzeit gerne ein **Issue eröffnen**.
 
-This project is licensed under the AGPL-3.0 License, except for third-party components listed in THIRD-PARTY-LICENSES.md.
+---
 
-Dieses Projekt ist kein offizielles Angebot des Kantons / der Schule oder der Centerboard AG. Es handelt sich um eine unabhängige Open-Source-Erweiterung.
+## ⚖️ Lizenz
 
-# **DISCLAIMER:**
-Keine Verbindung: Es besteht keine offizielle Zusammenarbeit mit den Betreibern von Schulnetz.
-Nutzung auf eigene Gefahr: Die Erweiterung wird "wie besehen" (as-is) bereitgestellt. Für die Richtigkeit der angezeigten Daten (insb. Noten und Termine) sind weiterhin ausschließlich die offiziellen Anzeigen in Schulnetz maßgeblich.
-Datenschutz & Analytics:
-Das Addon verarbeitet oder speichert keine Schuldaten (Noten, Namen, etc.) auf externen Servern. Alle Modifikationen finden lokal statt.
-Zur Qualitätsverbesserung werden anonyme Nutzungsstatistiken via Google Analytics und Browser-Telemetrie (Chrome, Edge, Firefox) erfasst.
-Diese Daten dienen rein der Analyse der Nutzerzahlen und Funktionsinteraktionen. Einzelnoten oder persönliche Inhalte werden niemals erfasst.
+Dieses Projekt ist Open Source und steht unter der **AGPL-3.0 Lizenz**, mit Ausnahme von Drittanbieter-Komponenten, die in der Datei `THIRD-PARTY-LICENSES.md` übersichtlich aufgelistet sind.
+
+*Hinweis: Dieses Projekt ist kein offizielles Angebot eines Kantons, einer Schule oder der Centerboard AG. Es handelt sich um eine völlig unabhängige Open-Source-Erweiterung.*
+
+---
+
+## ⚠️ Haftungsausschluss (Disclaimer)
+
+* **Keine offizielle Verbindung:** Es besteht keine offizielle Zusammenarbeit oder Partnerschaft mit den Betreibern von Schulnetz. Diese Erweiterung ist ein unabhängiges Projekt.
+* **Nutzung auf eigene Gefahr:** Das Add-on wird „wie besehen“ (*as-is*) und ohne jegliche Gewährleistung bereitgestellt. Für die Richtigkeit der angezeigten Daten – insbesondere Noten und Termine – sind weiterhin ausschließlich die offiziellen Anzeigen im originalen Schulnetz-System maßgeblich.
+
+### 🔒 Datenschutz & Analytics
+
+* **Lokale Verarbeitung:** Die Erweiterung verarbeitet oder speichert keine persönlichen Schuldaten (wie Noten, Namen etc.) auf externen Servern. Alle optischen und funktionalen Modifikationen finden ausschließlich lokal in deinem Browser statt.
+* **Anonyme Statistiken:** Zur kontinuierlichen Qualitätsverbesserung werden anonymisierte Nutzungsstatistiken via Google Analytics sowie über die Telemetrie der jeweiligen Browser-Stores (Chrome, Edge, Firefox) erfasst. 
+* **Keine sensiblen Daten:** Diese gesammelten Daten dienen rein der Analyse von Nutzerzahlen und der Interaktion mit den Funktionen der Erweiterung. Persönliche Inhalte oder individuelle Noten werden zu keinem Zeitpunkt erfasst, ausgelesen oder übermittelt.
