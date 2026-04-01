@@ -18,6 +18,7 @@ html.panum-dark-theme {
   --dhx-scheduler-base-colors-secondary-hover: rgba(23, 27, 34, 0.95);
   --dhx-scheduler-base-colors-text-base: #e8edf5;
   --dhx-scheduler-base-colors-text-light: #b5bfce;
+  --dhx-scheduler-default-border: 1px solid var(--panum-border);
   color-scheme: dark;
 }
 
@@ -1446,4 +1447,22 @@ html.panum-dark-theme #nav-main-menu.cls-page--mainmenu-small {
 
 html.panum-dark-theme #sn-nav-global {
   z-index: 4;
+}
+
+html.panum-dark-theme .login-footer,
+html.panum-dark-theme .login-header {
+  background-color: var(--panum-bg);
+}
+
+html.panum-dark-theme .login-header {
+  background-size: contain;
+  background-image: url("https://www.schul-netz.com/_application/_schulnetzWWW_5.12.1/css/flat/images/snlogo-192x192.png");
+}
+
+html.panum-dark-theme #cal_date {
+  background-color: #0000 !important;
+}
+
+html.panum-dark-theme .mdl-button--menu-icon::after {
+  color: var(--panum-text);
 }
